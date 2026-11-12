@@ -1,0 +1,24 @@
+@import 'tailwindcss';
+@source '../views/admin/**/*.blade.php';
+@source '../views/components/admin-layout.blade.php';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@font-face { font-family: 'Poppins'; font-style: normal; font-weight: 400; font-display: swap; src: url('../fonts/poppins-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Poppins'; font-style: normal; font-weight: 600; font-display: swap; src: url('../fonts/poppins-600-normal.woff2') format('woff2'); }
+@theme { --font-sans: 'Poppins', 'Segoe UI', sans-serif; }
+@layer components {
+ .nav-link { @apply flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-blue-700; }
+ .nav-link.active { @apply bg-blue-50 font-semibold text-blue-700; }
+ .nav-label { @apply mb-2 mt-6 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-400; }
+ .panel { @apply rounded-2xl border border-slate-200 bg-white p-6; }
+ .page-title { @apply text-3xl font-semibold tracking-tight text-slate-900; }
+ .page-intro { @apply mt-2 max-w-2xl text-sm leading-7 text-slate-500; }
+ .btn { @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-blue-700 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600; }
+ .btn-secondary { @apply inline-flex cursor-pointer items-center justify-center rounded-lg border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50; }
+ .field { @apply grid gap-2; }
+ .field label { @apply text-sm font-semibold text-slate-700; }
+ .input { @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-3 text-sm text-slate-800 outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100; }
+ .badge { @apply inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600; }
+ .badge-live { @apply bg-emerald-50 text-emerald-700; }
+}
+[hidden] { display: none !important; }
+textarea { resize: vertical; }
