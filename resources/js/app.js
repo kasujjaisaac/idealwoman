@@ -31,19 +31,43 @@ if (slider) {
     const controls = slider.querySelector('.slider-side-controls');
     const announcement = slider.querySelector('.slide-announcement');
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    const pauseButton = controls.querySelector('[data-slide-pause]');
     let current = 0;
+    let requested = 0;
+    let changeId = 0;
+    let hovered = false;
     let touchStart = null;
     let paused = reducedMotion.matches;
     let timer;
     const updateRotation = () => {
         clearInterval(timer);
-        if (!paused && !document.hidden && slides.length > 1) {
+        if (!paused && !hovered && !document.hidden && slides.length > 1) {
             timer = setInterval(() => showSlide(1), 5000);
         }
         announcement.setAttribute('aria-live', paused ? 'polite' : 'off');
+        pauseButton.textContent = paused ? 'Resume slideshow' : 'Pause slideshow';
+        pauseButton.setAttribute('aria-pressed', String(paused));
+        slider.dataset.paused = String(paused || hovered);
     };
-    const showSlide = (step) => {
-        current = (current + step + slides.length) % slides.length;
+    const showSlide = async (step) => {
+        requested = (requested + step + slides.length) % slides.length;
+        const target = requested;
+        const requestId = ++changeId;
+        const image = slides[target].querySelector('img');
+        if (image.dataset.src) {
+            image.loading = 'eager';
+            if (image.dataset.srcset) image.srcset = image.dataset.srcset;
+            image.src = image.dataset.src;
+            delete image.dataset.src;
+            delete image.dataset.srcset;
+        }
+        try {
+            await image.decode();
+        } catch {
+            return;
+        }
+        if (requestId !== changeId) return;
+        current = target;
         slides.forEach((slide, index) => {
             slide.classList.toggle('is-active', index === current);
             slide.setAttribute('aria-hidden', String(index !== current));
@@ -55,6 +79,18 @@ if (slider) {
         updateRotation();
     };
     controls.hidden = false;
+    pauseButton.addEventListener('click', () => {
+        paused = !paused;
+        updateRotation();
+    });
+    slider.addEventListener('mouseenter', () => { hovered = true; updateRotation(); });
+    slider.addEventListener('mouseleave', () => { hovered = false; updateRotation(); });
+    slider.addEventListener('focusin', (event) => {
+        if (event.target !== pauseButton) {
+            paused = true;
+            updateRotation();
+        }
+    });
     controls.querySelectorAll('[data-slide-step]').forEach((button) => {
         button.addEventListener('click', () => manualSlide(Number(button.dataset.slideStep)));
     });

@@ -699,6 +699,10 @@ address { font-style: normal; color: #58617b; }
 @media(pointer:coarse) { .social-links .social-link { width:44px; height:44px; min-width:44px; } .topline .social-links .social-link { width:44px; height:44px; min-width:44px; } }
 
 .social-links .social-placeholder { cursor: default; }
+.slider-pause { position:absolute; z-index:3; right:20px; bottom:20px; min-height:44px; padding:10px 14px; border:1px solid #ffffff99; background:#101e52; color:white; font:inherit; font-size:.75rem; cursor:pointer; }
+.slider-pause:hover { background:#153cc6; }
+.home-slider[data-paused="true"] .slider-slide img { animation-play-state:paused; }
+@media(max-width:600px) { .slider-pause { right:50%; transform:translateX(50%); bottom:15px; white-space:nowrap; } }
 .topline .social-links .social-placeholder:hover { background: transparent; color: inherit; transform: none; }
 .footer .social-links .social-placeholder:hover { background: transparent; color: inherit; transform: none; }
 

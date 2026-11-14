@@ -1,7 +1,8 @@
 <?php
 
 return [
-    'indexable' => env('SITE_INDEXABLE', false),
+    'indexable' => env('SITE_INDEXABLE', env('APP_ENV', 'local') === 'production'),
+    'google_site_verification' => env('GOOGLE_SITE_VERIFICATION'),
     'enquiries_enabled' => env('ENQUIRIES_ENABLED', false),
     'enquiries_to' => env('ENQUIRIES_TO', 'info@idealwomanuganda.com'),
     'social_links' => [

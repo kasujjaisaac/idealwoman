@@ -174,7 +174,7 @@ class AdminPanelTest extends TestCase
 
         $this->get('/our-work')->assertOk()->assertSee('Future skills')->assertSee('Build independence');
         $this->get('/about')->assertOk()->assertSee('New Director');
-        $this->get('/contact')->assertOk()->assertSee('mailto:hello@example.org', false)->assertSee('<title>Ideal Woman Community</title>', false);
+        $this->get('/contact')->assertOk()->assertSee('mailto:hello@example.org', false)->assertSee('<title>Contact | Ideal Woman Community</title>', false);
     }
 
     public function test_story_publishing_and_unpublishing_update_public_pages_and_sitemap(): void
@@ -220,7 +220,7 @@ class AdminPanelTest extends TestCase
     public function test_uploaded_image_can_be_assigned_and_served_without_public_storage_link(): void
     {
         Storage::fake('local');
-        $file = UploadedFile::fake()->createWithContent('community.png', base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9Zl1sAAAAASUVORK5CYII='));
+        $file = UploadedFile::fake()->image('community.png', 1200, 800);
         $this->actingAs(User::factory()->editor()->create())->post('/admin/media', ['file' => $file])->assertRedirect()->assertSessionHas('uploaded');
         $path = Storage::disk('local')->files('cms')[0];
         Storage::disk('local')->assertExists($path);

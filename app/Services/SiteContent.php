@@ -16,6 +16,9 @@ class SiteContent
     /** @var array<int,string>|null */
     private ?array $uploads = null;
 
+    /** @var array<string, array{width: int, height: int, version: string, variants: array<int, string>}>|null */
+    private ?array $imageManifest = null;
+
     /** @return array<string, array<string, mixed>> */
     public function definitions(): array
     {
@@ -109,6 +112,41 @@ class SiteContent
     public function hasMedia(string $name): bool
     {
         return ! empty($this->published['media'][$name]);
+    }
+
+    /** @return array{src: string, srcset: string, width: int, height: int} */
+    public function photo(string $name): array
+    {
+        $custom = $this->media($name, '');
+        if ($custom !== '') {
+            $filename = basename(parse_url($custom, PHP_URL_PATH));
+            $metadataPath = 'cms/variants/'.pathinfo($filename, PATHINFO_FILENAME).'.json';
+            $disk = Storage::disk('local');
+            $metadata = $disk->exists($metadataPath) ? json_decode($disk->get($metadataPath), true, flags: JSON_THROW_ON_ERROR) : null;
+            $url = fn (string $file): string => route('media.show', $file).'?v='.($metadata['version'] ?? '1');
+            $source = $disk->path('cms/'.$filename);
+        } else {
+            $this->imageManifest ??= is_file(public_path('images/variants.json'))
+                ? json_decode(file_get_contents(public_path('images/variants.json')), true, flags: JSON_THROW_ON_ERROR)
+                : [];
+            $metadata = $this->imageManifest[$name] ?? null;
+            $url = fn (string $file): string => asset('images/'.$file).'?v='.($metadata['version'] ?? '1');
+            $source = public_path('images/'.$name.'.jpg');
+        }
+        $dimensions = $metadata ?? (is_file($source) ? @getimagesize($source) : null);
+        $variants = $metadata['variants'] ?? [];
+        $srcset = [];
+        foreach ($variants as $width => $filename) {
+            $srcset[] = $url($filename).' '.$width.'w';
+        }
+        $fallback = $variants[960] ?? $variants[640] ?? (count($variants) ? reset($variants) : null);
+
+        return [
+            'src' => $fallback ? $url($fallback) : ($custom ?: asset('images/'.$name.'.jpg')),
+            'srcset' => implode(', ', $srcset),
+            'width' => $dimensions['width'] ?? $dimensions[0] ?? 1600,
+            'height' => $dimensions['height'] ?? $dimensions[1] ?? 1067,
+        ];
     }
 
     /** @return array<string,mixed> */

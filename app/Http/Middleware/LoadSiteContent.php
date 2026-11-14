@@ -13,6 +13,9 @@ class LoadSiteContent
 {
     public function handle(Request $request, Closure $next): Response
     {
+        if ($request->routeIs('media.show')) {
+            return $next($request);
+        }
         $content = new SiteContent;
         $content->load();
         if ($request->has('preview')) {
@@ -25,6 +28,9 @@ class LoadSiteContent
         config(['idealwoman' => $content->publicConfiguration()]);
         try {
             $response = $next($request);
+            $response->headers->set('X-Content-Type-Options', 'nosniff');
+            $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
+            $response->headers->set('X-Frame-Options', 'SAMEORIGIN');
             if (($request->is('admin', 'admin/*') || $request->has('preview'))) {
                 $response->headers->set('Cache-Control', 'no-store, private');
                 $response->headers->set('X-Robots-Tag', 'noindex, nofollow');

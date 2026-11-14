@@ -8,7 +8,7 @@
                 };
             @endphp
             @if($cardPhoto['name'])
-            <x-photo class="work-card-photo" :name="$cardPhoto['name']" :alt="$cardPhoto['alt']" sizes="(min-width: 901px) 40vw, (min-width: 601px) 50vw, 100vw"/>
+            <x-photo class="work-card-photo" :name="$cardPhoto['name']" :alt="$cardPhoto['alt']" sizes="(min-width: 901px) 33vw, (min-width: 601px) 50vw, 100vw"/>
             @endif
             <div class="work-card-body">
             <div class="card-top">

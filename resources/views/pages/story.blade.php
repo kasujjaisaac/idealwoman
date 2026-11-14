@@ -21,10 +21,7 @@
                 ['name' => 'peace-student-voice', 'alt' => 'A student in an orange shirt standing behind the Girl Child in Peace Building club sign.', 'width' => 1063, 'height' => 1600],
             ] as $photo)
                 <figure>
-                    <picture>
-                        <source type="image/webp" srcset="{{ asset('images/'.$photo['name'].'-640.webp') }} 640w, {{ asset('images/'.$photo['name'].'-960.webp') }} 960w, {{ asset('images/'.$photo['name'].'-1600.webp') }} 1600w" sizes="(min-width: 1280px) 584px, (min-width: 768px) 50vw, 100vw">
-                        <img class="h-auto w-full" src="{{ asset('images/'.$photo['name'].'.jpg') }}" width="{{ $photo['width'] }}" height="{{ $photo['height'] }}" alt="{{ $photo['alt'] }}" loading="lazy" decoding="async">
-                    </picture>
+                    <x-photo :name="$photo['name']" :alt="$photo['alt']" sizes="(min-width: 1280px) 584px, (min-width: 768px) 50vw, 100vw"/>
                     <figcaption>{{ $photo['alt'] }}</figcaption>
                 </figure>
             @endforeach

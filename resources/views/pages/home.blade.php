@@ -1,16 +1,17 @@
-<x-layout>
+<x-layout title="Women’s Empowerment in Masaka, Uganda">
 <section class="home-slider" aria-label="Ideal Woman community photographs" aria-roledescription="carousel" tabindex="0" aria-describedby="slider-help">
     <p id="slider-help" class="sr-only">{{ $site->text('home.text_006') }}</p>
     <div class="slider-photos">
         <x-photo class="slider-slide is-active" name="together" :alt="$site->text('home.text_001')" :eager="true" :wide="true" sizes="100vw"/>
-        <x-photo class="slider-slide" name="peace-school-gathering" :alt="$site->text('home.text_002')" :wide="true" sizes="100vw" aria-hidden="true"/>
-        <x-photo class="slider-slide" name="peace-club-students" :alt="$site->text('home.text_003')" :wide="true" sizes="100vw" aria-hidden="true"/>
-        <x-photo class="slider-slide" name="peace-school-club" :alt="$site->text('home.text_004')" :wide="true" sizes="100vw" aria-hidden="true"/>
+        <x-photo class="slider-slide" name="peace-school-gathering" :alt="$site->text('home.text_002')" :deferred="true" sizes="100vw" aria-hidden="true"/>
+        <x-photo class="slider-slide" name="peace-club-students" :alt="$site->text('home.text_003')" :deferred="true" sizes="100vw" aria-hidden="true"/>
+        <x-photo class="slider-slide" name="peace-school-club" :alt="$site->text('home.text_004')" :deferred="true" sizes="100vw" aria-hidden="true"/>
     </div>
     <div class="slider-gradient"></div>
     <div class="slider-side-controls" hidden>
         <button type="button" class="slide-side previous-slide" data-slide-step="-1" aria-label="Previous photograph"><span aria-hidden="true">&#8249;</span></button>
         <button type="button" class="slide-side next-slide" data-slide-step="1" aria-label="Next photograph"><span aria-hidden="true">&#8250;</span></button>
+        <button type="button" class="slider-pause" data-slide-pause aria-pressed="false">Pause slideshow</button>
         <span class="sr-only slide-announcement" aria-live="off" aria-atomic="true">{{ $site->text('home.text_007') }}</span>
     </div>
     <div class="wrap slider-content">
