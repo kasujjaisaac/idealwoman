@@ -32,6 +32,7 @@
             <a class="topbar-email" href="mailto:{{ preg_replace('/\s+/', '', $site->text('settings.email')) }}"><x-icon name="email"/>{{ $site->text('settings.email') }}</a>
         </div>
         <div class="topbar-actions">
+            <x-social-links label="Follow Ideal Woman on social media"/>
             <a class="support-button" href="{{ route('involved') }}#partnership">{{ $site->text('shared.text_003') }}</a>
         </div>
     </div>

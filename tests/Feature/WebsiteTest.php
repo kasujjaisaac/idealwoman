@@ -15,7 +15,7 @@ class WebsiteTest extends TestCase
     #[DataProvider('pages')]
     public function test_public_pages_render_verified_content(string $url, string $text): void
     {
-        $this->get($url)->assertOk()->assertSee($text, false)->assertSee('noindex, nofollow', false);
+        $this->get($url)->assertOk()->assertSee($text, false)->assertSee('noindex, nofollow', false)->assertDontSee('@endif', false)->assertDontSee('@if(', false);
     }
 
     public function test_unknown_story_returns_404(): void

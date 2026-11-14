@@ -5,11 +5,12 @@ return [
     'enquiries_enabled' => env('ENQUIRIES_ENABLED', false),
     'enquiries_to' => env('ENQUIRIES_TO', 'info@idealwomanuganda.com'),
     'social_links' => [
-        'facebook' => env('SOCIAL_FACEBOOK_URL'),
-        'instagram' => env('SOCIAL_INSTAGRAM_URL'),
-        'x' => env('SOCIAL_X_URL'),
+        'facebook' => env('SOCIAL_FACEBOOK_URL', 'https://www.facebook.com/share/19hy141uyo/?mibextid=wwXIfr'),
+        'instagram' => env('SOCIAL_INSTAGRAM_URL', 'https://www.instagram.com/idealwomanuganda?cplk=N3oxbWc4cWtpamFt&utm_source=qr'),
+        'threads' => env('SOCIAL_THREADS_URL', 'https://www.threads.com/@idealwomanuganda?igshid=NTc4MTIwNjQ2YQ=='),
+        'x' => env('SOCIAL_X_URL', 'https://x.com/idealwomanugan1?s=11'),
         'linkedin' => env('SOCIAL_LINKEDIN_URL'),
-        'youtube' => env('SOCIAL_YOUTUBE_URL'),
+        'youtube' => env('SOCIAL_YOUTUBE_URL', 'https://youtube.com/@idealwomanuganda3682?si=4k1604PWuDC7ZdBQ'),
         'tiktok' => env('SOCIAL_TIKTOK_URL'),
     ],
     'work' => [
