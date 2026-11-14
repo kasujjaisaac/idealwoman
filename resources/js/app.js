@@ -31,23 +31,21 @@ if (slider) {
     const controls = slider.querySelector('.slider-side-controls');
     const announcement = slider.querySelector('.slide-announcement');
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-    const pauseButton = controls.querySelector('[data-slide-pause]');
     let current = 0;
     let requested = 0;
     let changeId = 0;
     let hovered = false;
+    let focused = false;
     let touchStart = null;
     let paused = reducedMotion.matches;
     let timer;
     const updateRotation = () => {
         clearInterval(timer);
-        if (!paused && !hovered && !document.hidden && slides.length > 1) {
+        if (!paused && !hovered && !focused && !document.hidden && slides.length > 1) {
             timer = setInterval(() => showSlide(1), 5000);
         }
-        announcement.setAttribute('aria-live', paused ? 'polite' : 'off');
-        pauseButton.textContent = paused ? 'Resume slideshow' : 'Pause slideshow';
-        pauseButton.setAttribute('aria-pressed', String(paused));
-        slider.dataset.paused = String(paused || hovered);
+        announcement.setAttribute('aria-live', paused || hovered || focused ? 'polite' : 'off');
+        slider.dataset.paused = String(paused || hovered || focused);
     };
     const showSlide = async (step) => {
         requested = (requested + step + slides.length) % slides.length;
@@ -79,17 +77,12 @@ if (slider) {
         updateRotation();
     };
     controls.hidden = false;
-    pauseButton.addEventListener('click', () => {
-        paused = !paused;
-        updateRotation();
-    });
     slider.addEventListener('mouseenter', () => { hovered = true; updateRotation(); });
     slider.addEventListener('mouseleave', () => { hovered = false; updateRotation(); });
-    slider.addEventListener('focusin', (event) => {
-        if (event.target !== pauseButton) {
-            paused = true;
-            updateRotation();
-        }
+    slider.addEventListener('focusin', () => { focused = true; updateRotation(); });
+    slider.addEventListener('focusout', (event) => {
+        focused = slider.contains(event.relatedTarget);
+        updateRotation();
     });
     controls.querySelectorAll('[data-slide-step]').forEach((button) => {
         button.addEventListener('click', () => manualSlide(Number(button.dataset.slideStep)));

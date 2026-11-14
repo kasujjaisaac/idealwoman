@@ -11,7 +11,6 @@
     <div class="slider-side-controls" hidden>
         <button type="button" class="slide-side previous-slide" data-slide-step="-1" aria-label="Previous photograph"><span aria-hidden="true">&#8249;</span></button>
         <button type="button" class="slide-side next-slide" data-slide-step="1" aria-label="Next photograph"><span aria-hidden="true">&#8250;</span></button>
-        <button type="button" class="slider-pause" data-slide-pause aria-pressed="false">Pause slideshow</button>
         <span class="sr-only slide-announcement" aria-live="off" aria-atomic="true">{{ $site->text('home.text_007') }}</span>
     </div>
     <div class="wrap slider-content">
