@@ -748,4 +748,89 @@ foreach (['home' => 'Home', 'about' => 'About Us', 'work' => 'Our Work', 'storie
 }
 $content['settings']['fields']['map_url'] = ['label' => 'Office map URL', 'default' => 'https://www.google.com/maps/search/?api=1&query=Muto+Complex+Masaka+Uganda', 'type' => 'url'];
 
+$pageGroups = [
+    'home' => [7 => 'Photograph descriptions', 15 => 'Hero message and buttons', 18 => 'Principles', 25 => 'About introduction', 30 => 'Activity cards', 36 => 'Featured story', 49 => 'Partners'],
+    'about' => [2 => 'Search appearance', 5 => 'Page introduction', 7 => 'Photograph descriptions', 13 => 'Our story', 22 => 'Purpose and values', 29 => 'Values list', 34 => 'Community clusters', 100 => 'Leadership and governance'],
+    'work' => [2 => 'Search appearance', 5 => 'Page introduction', 9 => 'Programme sections', 13 => 'Activity stories', 100 => 'Ways to work together'],
+    'contact' => [2 => 'Search appearance', 5 => 'Page introduction', 19 => 'Contact information', 100 => 'Enquiry form'],
+    'involved' => [2 => 'Search appearance', 5 => 'Page introduction', 11 => 'Organisational profile', 100 => 'Partnerships'],
+    'stories' => [2 => 'Search appearance', 5 => 'Page introduction', 100 => 'Story list and empty state'],
+    'shared' => [5 => 'Header', 100 => 'Footer'],
+];
+foreach ($content as $sectionKey => &$section) {
+    foreach ($section['fields'] as $key => &$field) {
+        $field['group'] = 'Page content';
+        if (preg_match('/^text_(\d+)$/', $key, $match)) {
+            foreach ($pageGroups[$sectionKey] ?? [] as $limit => $group) {
+                if ((int) $match[1] <= $limit) {
+                    $field['group'] = $group;
+                    break;
+                }
+            }
+        }
+        if ($sectionKey === 'settings') {
+            $field['group'] = in_array($key, ['tab_title', 'default_description']) ? 'Search appearance' : 'Contact details';
+        }
+    }
+    unset($field);
+}
+unset($section);
+
+$content['home']['fields']['seo_title'] = ['label' => 'Search result title', 'default' => "Women's Empowerment in Masaka, Uganda", 'type' => 'text', 'group' => 'Search appearance'];
+$content['home']['fields']['seo_description'] = ['label' => 'Search result description', 'default' => $content['settings']['fields']['default_description']['default'], 'type' => 'textarea', 'group' => 'Search appearance'];
+foreach (['primary_page' => ['Main hero button destination', 'work'], 'secondary_page' => ['Second hero button destination', 'involved']] as $key => [$label, $destination]) {
+    $content['home']['fields'][$key] = ['label' => $label, 'default' => $destination, 'type' => 'select', 'required' => true, 'options' => ['about' => 'About us', 'work' => 'Our work', 'stories' => 'Stories', 'involved' => 'Get involved', 'contact' => 'Contact'], 'group' => 'Hero message and buttons'];
+}
+$content['home']['fields']['featured_story'] = ['label' => 'Story linked from the featured section', 'default' => 'students-championing-peace', 'type' => 'select', 'options' => [], 'group' => 'Featured story'];
+foreach ([
+    'home' => ['hero_image_1' => ['Hero photograph 1', 'together'], 'hero_image_2' => ['Hero photograph 2', 'peace-school-gathering'], 'hero_image_3' => ['Hero photograph 3', 'peace-club-students'], 'hero_image_4' => ['Hero photograph 4', 'peace-school-club'], 'about_image' => ['About introduction photograph', 'team'], 'featured_image' => ['Featured story photograph', 'peace-school-gathering']],
+    'about' => ['intro_image' => ['Our story photograph', 'team'], 'cluster_image' => ['Community clusters photograph', 'together']],
+] as $sectionKey => $photos) {
+    foreach ($photos as $key => [$label, $image]) {
+        $content[$sectionKey]['fields'][$key] = ['label' => $label, 'default' => $image, 'type' => 'asset', 'required' => true, 'group' => 'Page photographs'];
+    }
+}
+foreach (['home' => 'together', 'about' => 'team', 'work' => 'climate-briquette-workshop', 'stories' => 'peace', 'involved' => 'together', 'contact' => 'community'] as $sectionKey => $image) {
+    $content[$sectionKey]['fields']['seo_image'] = ['label' => 'Search and social sharing image', 'default' => $image, 'type' => 'asset', 'required' => true, 'group' => 'Search appearance'];
+}
+foreach (['principles' => 'Principles strip', 'about' => 'About introduction', 'work' => 'Activity cards', 'featured' => 'Featured story', 'partners' => 'Partners'] as $key => $label) {
+    $content['home']['fields']['show_'.$key] = ['label' => $label, 'default' => 'show', 'type' => 'select', 'options' => ['show' => 'Show this section', 'hide' => 'Hide this section'], 'group' => 'Section visibility'];
+}
+$content['work']['fields']['card_button'] = ['label' => 'Activity card button', 'default' => 'Explore this area', 'type' => 'text', 'group' => 'Programme sections'];
+$content['work']['fields']['objectives_label'] = ['label' => 'Programme section eyebrow', 'default' => 'Our objectives', 'type' => 'text', 'group' => 'Programme sections'];
+$content['galleries'] = ['label' => 'Activity photo galleries', 'fields' => []];
+
+$galleryDefaults = [
+    'climate' => [
+        ['climate-biomass', 'Charred plant material being prepared during the climate activity.'],
+        ['climate-organic-materials', 'Sacks and a wheelbarrow filled with collected plant materials.'],
+        ['climate-community-training', 'Community members gathered for a practical training session.'],
+        ['climate-plastic-collection', 'Plastic bottles collected in sacks during a waste collection activity.'],
+    ],
+    'peace' => [
+        ['peace-club-students', 'Students in orange shirts and adults gathered beside a Girl Child in Peace Building club sign.'],
+        ['peace-club-community', 'A group of students and adults posing together in a school garden beside the peace-building club sign.'],
+        ['peace-club-advocate', 'An adult standing behind a sign reading Our Peace, Our Responsibility and Girl Child in Peace Building.'],
+        ['peace-club-mentorship', 'A student and an adult standing together behind the peace-building club sign.'],
+        ['peace-club-friends', 'Students standing together beside the Girl Child in Peace Building club sign.'],
+        ['peace-club-youth', 'Young people and adults gathered around a Students Championing Peace club sign.'],
+        ['peace-youth-community', 'A larger group of young people and adults posing beside the peace-building club sign outdoors.'],
+        ['peace-school-club', 'Students and adults gathered on a school lawn beside a Students Championing Peace club sign.'],
+        ['peace-school-visitors', 'Adults standing together on a school lawn behind a peace-building club sign.'],
+        ['peace-school-team', 'Students and adults posing beside a peace-building club sign outside a school building.'],
+        ['peace-school-gathering', 'A large group of students and adults gathered in a school courtyard around a peace-building club sign.'],
+        ['peace-school-together', 'Students in orange shirts and school uniforms standing with adults in a school courtyard.'],
+        ['peace-school-connection', 'A student and an adult standing together on the grass outside a school building.'],
+        ['peace-student-voice', 'A student in an orange shirt standing behind the Girl Child in Peace Building club sign.'],
+    ],
+];
+foreach ($galleryDefaults as $gallery => $photos) {
+    for ($index = 0; $index < count($photos) + 4; $index++) {
+        $prefix = $gallery.'_'.($index + 1);
+        $group = $gallery === 'climate' ? 'Climate change gallery' : 'Peace activity gallery';
+        $content['galleries']['fields'][$prefix.'_image'] = ['label' => 'Photograph '.($index + 1), 'default' => $photos[$index][0] ?? '', 'type' => 'asset', 'group' => $group, 'help' => 'Choose a photograph, or choose No image to leave this gallery position empty.'];
+        $content['galleries']['fields'][$prefix.'_alt'] = ['label' => 'Photograph '.($index + 1).' description and caption', 'default' => $photos[$index][1] ?? '', 'type' => 'text', 'group' => $group];
+    }
+}
+
 return $content;

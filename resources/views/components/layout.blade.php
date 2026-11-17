@@ -58,7 +58,15 @@
     <script type="application/ld+json">{!! json_encode($structuredData, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) !!}</script>
 </head>
 <body @class(['home-page' => request()->routeIs('home')])>
-@if(request()->has('preview'))<div role="status" style="padding:12px;background:#fff3cd;color:#664d03;text-align:center">Private draft preview ? Changes are not published.</div>@endif
+@if(request()->has('preview'))<div role="status" style="padding:16px;background:#fff3cd;color:#664d03;text-align:center">Private draft preview. Changes are not published. <a href="{{ $site->editorUrl((string) request('preview')) }}" style="font-weight:600;text-decoration:underline">Return to editor</a></div>@endif
+@auth
+@can('manage-content')
+@unless(request()->has('preview'))
+@php($editingSection = request()->routeIs('stories.show') ? 'story-'.request()->route('slug') : request()->route()->getName())
+<div class="editor-toolbar"><span>Website editor</span><a href="{{ $site->editorUrl($editingSection) }}">Edit this page</a><a href="{{ route('admin.content.edit', 'media') }}">Website images</a><a href="{{ route('admin.dashboard') }}">Admin dashboard</a></div>
+@endunless
+@endcan
+@endauth
 <a href="#main" class="skip-link">{{ $site->text('shared.text_001') }}</a>
 <div class="topline" aria-label="Contact and support">
     <div class="wrap topbar-inner">

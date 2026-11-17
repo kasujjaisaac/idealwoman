@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\ContentController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MediaController;
+use App\Http\Controllers\Admin\PasswordResetController;
 use App\Http\Controllers\Admin\StoryController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\EnquiryController;
@@ -37,6 +38,12 @@ Route::get('/media/{path}', [MediaController::class, 'show'])->name('media.show'
 Route::prefix('admin')->group(function (): void {
     Route::get('/login', [AuthController::class, 'create'])->name('login');
     Route::post('/login', [AuthController::class, 'store'])->middleware('throttle:admin-login')->name('admin.login');
+    Route::middleware('guest')->group(function (): void {
+        Route::get('/forgot-password', [PasswordResetController::class, 'request'])->name('password.request');
+        Route::post('/forgot-password', [PasswordResetController::class, 'send'])->middleware('throttle:admin-password-reset')->name('password.email');
+        Route::get('/reset-password/{token}', [PasswordResetController::class, 'edit'])->name('password.reset');
+        Route::post('/reset-password', [PasswordResetController::class, 'update'])->middleware('throttle:admin-password-reset')->name('password.update');
+    });
     Route::post('/logout', [AuthController::class, 'destroy'])->middleware('auth')->name('admin.logout');
     Route::middleware(['auth', 'can:manage-content'])->name('admin.')->group(function (): void {
         Route::get('/', DashboardController::class)->name('dashboard');

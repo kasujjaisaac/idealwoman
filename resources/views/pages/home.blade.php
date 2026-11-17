@@ -1,11 +1,11 @@
-<x-layout title="Women's Empowerment in Masaka, Uganda" image="together.jpg">
+<x-layout :title="$site->text('home.seo_title')" :description="$site->text('home.seo_description')" :image="$site->text('home.seo_image').'.jpg'">
 <section class="home-slider" aria-label="Ideal Woman community photographs" aria-roledescription="carousel" tabindex="0" aria-describedby="slider-help">
     <p id="slider-help" class="sr-only">{{ $site->text('home.text_006') }}</p>
     <div class="slider-photos">
-        <x-photo class="slider-slide is-active" name="together" :alt="$site->text('home.text_001')" :eager="true" :wide="true" sizes="100vw"/>
-        <x-photo class="slider-slide" name="peace-school-gathering" :alt="$site->text('home.text_002')" :deferred="true" sizes="100vw" aria-hidden="true"/>
-        <x-photo class="slider-slide" name="peace-club-students" :alt="$site->text('home.text_003')" :deferred="true" sizes="100vw" aria-hidden="true"/>
-        <x-photo class="slider-slide" name="peace-school-club" :alt="$site->text('home.text_004')" :deferred="true" sizes="100vw" aria-hidden="true"/>
+        <x-photo class="slider-slide is-active" :name="$site->text('home.hero_image_1')" :alt="$site->text('home.text_001')" :eager="true" :wide="true" sizes="100vw"/>
+        <x-photo class="slider-slide" :name="$site->text('home.hero_image_2')" :alt="$site->text('home.text_002')" :deferred="true" sizes="100vw" aria-hidden="true"/>
+        <x-photo class="slider-slide" :name="$site->text('home.hero_image_3')" :alt="$site->text('home.text_003')" :deferred="true" sizes="100vw" aria-hidden="true"/>
+        <x-photo class="slider-slide" :name="$site->text('home.hero_image_4')" :alt="$site->text('home.text_004')" :deferred="true" sizes="100vw" aria-hidden="true"/>
     </div>
     <div class="slider-gradient"></div>
     <div class="slider-side-controls" hidden>
@@ -18,14 +18,23 @@
         <p class="eyebrow light hero-eyebrow"><span>{{ $site->text('home.text_008') }}</span> <span>{{ $site->text('home.text_009') }}</span></p>
         <h1 class="hero-title"><span>{{ $site->text('home.text_010') }}</span><span>{{ $site->text('home.text_011') }}</span><em>{{ $site->text('home.text_012') }}</em></h1>
         <p class="hero-description">{{ $site->text('home.text_013') }}</p>
-        <div class="hero-buttons"><a class="button white" href="{{ route('work') }}">{{ $site->text('home.text_014') }}</a><a class="hero-secondary" href="{{ route('involved') }}#partnership">{{ $site->text('home.text_015') }}</a></div>
+        <div class="hero-buttons"><a class="button white" href="{{ route($site->text('home.primary_page')) }}">{{ $site->text('home.text_014') }}</a><a class="hero-secondary" href="{{ route($site->text('home.secondary_page')) }}{{ $site->text('home.secondary_page') === 'involved' ? '#partnership' : '' }}">{{ $site->text('home.text_015') }}</a></div>
 
     </div>
 </section>
+@if($site->text('home.show_principles') !== 'hide')
 <section class="principles" aria-label="Our principles"><div class="wrap grid gap-6 md:grid-cols-3"><div><x-icon name="pin"/><span>{{ $site->text('home.text_016') }}</span></div><div><x-icon name="community"/><span>{{ $site->text('home.text_017') }}</span></div><div><x-icon name="opportunity"/><span>{{ $site->text('home.text_018') }}</span></div></div></section>
-<section class="section wrap about-intro grid items-center gap-12 lg:grid-cols-2"><div class="image-frame"><x-photo name="team" :alt="$site->text('home.text_005')"/><span class="image-note">{{ $site->text('home.text_019') }}</span></div><div class="section-copy"><p class="eyebrow">{{ $site->text('home.text_020') }}</p><h2>{{ $site->text('home.text_021') }}<br>{{ $site->text('home.text_022') }}</h2><p class="lede">{{ $site->text('home.text_023') }}</p><p>{{ $site->text('home.text_024') }}</p><a class="button action-button" href="{{ route('about') }}">{{ $site->text('home.text_025') }}</a></div></section>
+@endif
+@if($site->text('home.show_about') !== 'hide')
+<section class="section wrap about-intro grid items-center gap-12 lg:grid-cols-2"><div class="image-frame"><x-photo :name="$site->text('home.about_image')" :alt="$site->text('home.text_005')"/><span class="image-note">{{ $site->text('home.text_019') }}</span></div><div class="section-copy"><p class="eyebrow">{{ $site->text('home.text_020') }}</p><h2>{{ $site->text('home.text_021') }}<br>{{ $site->text('home.text_022') }}</h2><p class="lede">{{ $site->text('home.text_023') }}</p><p>{{ $site->text('home.text_024') }}</p><a class="button action-button" href="{{ route('about') }}">{{ $site->text('home.text_025') }}</a></div></section>
+@endif
+@if($site->text('home.show_work') !== 'hide')
 <section class="section work-section"><div class="wrap"><div class="section-heading"><div><p class="eyebrow">{{ $site->text('home.text_026') }}</p><h2>{{ $site->text('home.text_027') }}<br>{{ $site->text('home.text_028') }}</h2></div><p>{{ $site->text('home.text_029') }}<br>{{ $site->text('home.text_030') }}</p></div><x-work-cards/></div></section>
-<section class="section wrap featured grid items-center gap-12 lg:grid-cols-2"><div class="section-copy"><p class="eyebrow">{{ $site->text('home.text_031') }}</p><h2>{{ $site->text('home.text_032') }}<br>{{ $site->text('home.text_033') }}</h2><p class="lede">{{ $site->text('home.text_034') }}</p><p>{{ $site->text('home.text_035') }}</p><a href="{{ (config('idealwoman.stories.students-championing-peace') ? route('stories.show', 'students-championing-peace') : route('stories')) }}" class="button action-button">{{ $site->text('home.text_036') }}</a></div><figure><x-photo name="peace-school-gathering" :alt="$site->text('home.text_002')"/></figure></section>
+@endif
+@if($site->text('home.show_featured') !== 'hide')
+<section class="section wrap featured grid items-center gap-12 lg:grid-cols-2"><div class="section-copy"><p class="eyebrow">{{ $site->text('home.text_031') }}</p><h2>{{ $site->text('home.text_032') }}<br>{{ $site->text('home.text_033') }}</h2><p class="lede">{{ $site->text('home.text_034') }}</p><p>{{ $site->text('home.text_035') }}</p><a href="{{ (config('idealwoman.stories.'.$site->text('home.featured_story')) && $site->text('home.featured_story') !== '' ? route('stories.show', $site->text('home.featured_story')) : route('stories')) }}" class="button action-button">{{ $site->text('home.text_036') }}</a></div><figure><x-photo :name="$site->text('home.featured_image')" :alt="$site->text('home.text_002')"/></figure></section>
+@endif
+@if($site->text('home.show_partners') !== 'hide')
 <section class="section partners-section" aria-labelledby="partners-heading">
     <div class="wrap">
         <div class="section-heading">
@@ -76,5 +85,6 @@
         </ul>
     </div>
 </section>
+@endif
 <x-partnership/>
 </x-layout>

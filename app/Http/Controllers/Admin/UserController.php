@@ -19,12 +19,12 @@ class UserController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $data = $request->validate(['name' => ['required', 'string', 'max:120'], 'email' => ['required', 'email', 'max:254', Rule::unique('users')], 'password' => ['required', 'string', 'min:12', 'confirmed'], 'role' => ['required', Rule::in(['admin', 'editor'])]]);
+        $data = $request->validate(['name' => ['required', 'string', 'max:120'], 'email' => ['required', 'email', 'max:254', Rule::unique('users')], 'password' => ['required', 'string', 'min:12', 'confirmed'], 'role' => ['sometimes', Rule::in(['admin', 'editor'])]]);
         $user = new User(collect($data)->only(['name', 'email', 'password'])->all());
-        $user->role = $data['role'];
+        $user->role = $data['role'] ?? 'admin';
         $user->save();
 
-        return back()->with('success', 'Team member created.');
+        return back()->with('success', $user->role === 'admin' ? 'Administrator account created. They can sign in and manage the website and users.' : 'Team member created.');
     }
 
     public function update(Request $request, User $user): RedirectResponse

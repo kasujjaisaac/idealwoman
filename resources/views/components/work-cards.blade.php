@@ -3,7 +3,7 @@
         <a class="work-card" href="{{ route('work') }}#{{ $slug }}">
             @php
                 $cardPhoto = match ($slug) {
-                    'community-environment' => ['name' => 'together', 'alt' => 'Workshop participants gathered behind a table with laptops.'],
+                    'community-environment' => ['name' => $work['image'] ?: 'together', 'alt' => $work['image'] ? ($work['alt'] ?? '') : 'Workshop participants gathered behind a table with laptops.'],
                     default => ['name' => $work['image'], 'alt' => $work['alt'] ?? ''],
                 };
             @endphp
@@ -16,7 +16,7 @@
             </div>
             <h3>{{ $work['title'] }}</h3>
             <p>{{ $work['description'] }}</p>
-            <span class="work-card-footer"><span class="button work-card-action">Explore this area</span><span class="work-card-marker" aria-hidden="true"></span></span>
+            <span class="work-card-footer"><span class="button work-card-action">{{ $site->text('work.card_button') }}</span><span class="work-card-marker" aria-hidden="true"></span></span>
             </div>
         </a>
     @endforeach

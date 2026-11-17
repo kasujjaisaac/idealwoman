@@ -21,7 +21,7 @@ class ContentController extends Controller
         abort_if($definition === null, 404);
         $record = ContentSection::query()->where('slug', $section)->first();
 
-        return view('admin.content', ['slug' => $section, 'definition' => $definition, 'record' => $record, 'values' => array_replace($content->defaults($section), $record?->draft ?? []), 'revisions' => $record?->revisions()->with('author')->latest('id')->limit(20)->get() ?? collect(), 'files' => Storage::disk('local')->files('cms'), 'images' => $content->imageNames()]);
+        return view('admin.content', ['slug' => $section, 'definition' => $definition, 'record' => $record, 'values' => array_replace($content->defaults($section), $record?->draft ?? []), 'revisions' => $record?->revisions()->with('author')->latest('id')->limit(20)->get() ?? collect(), 'files' => Storage::disk('local')->files('cms'), 'assetOptions' => $content->imageOptions(), 'groups' => collect($definition['fields'])->groupBy(fn (array $field): string => $field['group'] ?? 'Content', true), 'pageRoute' => $content->pageRoute($section), 'definitions' => $content->definitions()]);
     }
 
     public function update(SaveContentRequest $request, string $section, SiteContent $content): RedirectResponse
@@ -39,7 +39,14 @@ class ContentController extends Controller
                 }
             }
         }
-        $content->save($section, $content->definitions()[$section]['label'], 'page', $values, $data['action'], $request->user(), (int) $data['version']);
+        $content->save($section, $content->definitions()[$section]['label'], 'page', $values, $data['action'] === 'preview' ? 'draft' : $data['action'], $request->user(), (int) $data['version']);
+        if ($data['action'] === 'preview') {
+            if ($section === 'galleries' && ($data['preview_page'] ?? '') === 'peace') {
+                return to_route('stories.show', ['slug' => 'students-championing-peace', 'preview' => $section]);
+            }
+
+            return to_route($content->pageRoute($section), ['preview' => $section]);
+        }
 
         return back()->with('success', $data['action'] === 'publish' ? 'Changes published to the website.' : 'Draft saved. The live website has not changed.');
     }

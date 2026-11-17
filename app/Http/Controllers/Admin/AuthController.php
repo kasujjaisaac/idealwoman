@@ -18,8 +18,8 @@ class AuthController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $credentials = $request->validate(['email' => ['required', 'email'], 'password' => ['required', 'string']]);
-        if (! Auth::attempt($credentials)) {
+        $data = $request->validate(['email' => ['required', 'email', 'max:255'], 'password' => ['required', 'string', 'max:1000'], 'remember' => ['sometimes', 'boolean']]);
+        if (! Auth::attempt(['email' => $data['email'], 'password' => $data['password']], $request->boolean('remember'))) {
             throw ValidationException::withMessages(['email' => 'These credentials do not match our records.']);
         }
         if (! in_array($request->user()->role, ['admin', 'editor'], true)) {

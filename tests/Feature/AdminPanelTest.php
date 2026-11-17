@@ -245,6 +245,7 @@ class AdminPanelTest extends TestCase
         $user = User::where('email', 'editor@example.org')->firstOrFail();
         $this->assertSame('editor', $user->role);
         $this->assertTrue(Hash::check('a-long-secret-password', $user->password));
+        $this->flushSession();
         $this->actingAs($user)->patch('/admin/users/'.$user->id, ['role' => 'admin'])->assertForbidden();
         $this->assertSame('editor', $user->fresh()->role);
     }
@@ -254,6 +255,25 @@ class AdminPanelTest extends TestCase
         $user = User::factory()->admin()->create();
         $this->actingAs($user)->patch('/admin/users/'.$user->id, ['role' => 'user'])->assertUnprocessable();
         $this->assertSame('admin', $user->fresh()->role);
+    }
+
+    public function test_new_accounts_default_to_administrators_and_can_manage_other_users(): void
+    {
+        $this->actingAs(User::factory()->admin()->create())->get('/admin/users')->assertOk()
+            ->assertSee('Add a new administrator')->assertSee('Create administrator');
+
+        $this->post('/admin/users', ['name' => 'New Administrator', 'email' => 'new-admin@example.org',
+            'password' => 'a-long-admin-password', 'password_confirmation' => 'a-long-admin-password'])->assertRedirect();
+
+        $newAdmin = User::where('email', 'new-admin@example.org')->firstOrFail();
+        $this->assertSame('admin', $newAdmin->role);
+        $this->assertTrue(Hash::check('a-long-admin-password', $newAdmin->password));
+        $this->post('/admin/logout');
+        $this->post('/admin/login', ['email' => $newAdmin->email, 'password' => 'a-long-admin-password'])->assertRedirect('/admin');
+        $this->get('/admin/users')->assertOk();
+        $this->post('/admin/users', ['name' => 'Another Administrator', 'email' => 'another-admin@example.org',
+            'password' => 'another-long-password', 'password_confirmation' => 'another-long-password'])->assertRedirect();
+        $this->assertDatabaseHas('users', ['email' => 'another-admin@example.org', 'role' => 'admin']);
     }
 
     public function test_password_change_requires_current_password_and_hashes_new_password(): void

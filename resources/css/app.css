@@ -14,6 +14,8 @@
 }
 :root { color: #101e52; font-family: var(--font-sans); font-size: 16px; line-height: 1.7; }
 body { margin: 0; background: white; }
+.editor-toolbar { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px 24px; padding: 12px 20px; background: #101e52; color: white; font-size: .8rem; }
+.editor-toolbar a { text-decoration: underline; }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 a,button,input,textarea,select { -webkit-tap-highlight-color: transparent; }
@@ -490,8 +492,6 @@ address { font-style: normal; color: #58617b; }
     flex-direction: column;
     align-items: flex-start;
     gap: 3px;
-    padding-left: 14px;
-    border-left: 3px solid #e33d35;
     margin-bottom: 22px;
     max-width: 460px;
     color: #e8eeff;

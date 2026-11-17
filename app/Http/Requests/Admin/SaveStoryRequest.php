@@ -14,6 +14,6 @@ class SaveStoryRequest extends FormRequest
 
     public function rules(): array
     {
-        return ['slug' => ['required', 'string', 'max:150', 'regex:/\A[a-z0-9]+(?:-[a-z0-9]+)*\z/'], 'title' => ['required', 'string', 'max:200'], 'category' => ['required', 'string', 'max:120'], 'excerpt' => ['required', 'string', 'max:1000'], 'body' => ['required', 'string', 'max:50000'], 'image' => ['required', 'string', 'max:150', 'regex:/\A[a-zA-Z0-9-]+\z/'], 'alt' => ['required', 'string', 'max:500'], 'action' => ['required', Rule::in(['draft', 'publish'])], 'version' => ['required', 'integer', 'min:0']];
+        return ['slug' => ['required', 'string', 'max:150', 'regex:/\A[a-z0-9]+(?:-[a-z0-9]+)*\z/'], 'title' => ['required', 'string', 'max:200'], 'category' => ['required', 'string', 'max:120'], 'excerpt' => ['required', 'string', 'max:1000'], 'body' => ['required', 'string', 'max:50000'], 'image' => ['required', 'string', 'max:150', 'regex:/\A[a-zA-Z0-9-]+\z/'], 'alt' => ['required', 'string', 'max:500'], 'action' => ['required', Rule::in(['draft', 'publish', 'preview'])], 'version' => ['required', 'integer', 'min:0']];
     }
 }

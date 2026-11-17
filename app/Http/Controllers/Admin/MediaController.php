@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Services\ImageOptimizer;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -19,7 +20,7 @@ class MediaController extends Controller
         return view('admin.media', ['files' => array_reverse(Storage::disk('local')->files('cms'))]);
     }
 
-    public function store(Request $request, ImageOptimizer $optimizer): RedirectResponse
+    public function store(Request $request, ImageOptimizer $optimizer): RedirectResponse|JsonResponse
     {
         $request->validate(['file' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'extensions:jpg,jpeg,png,webp,pdf', 'max:10240']]);
         $file = $request->file('file');
@@ -43,6 +44,10 @@ class MediaController extends Controller
                 report($exception);
                 throw ValidationException::withMessages(['file' => 'This image could not be processed. Try another image or contact the website administrator.']);
             }
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json(['path' => $path, 'name' => pathinfo($path, PATHINFO_FILENAME), 'label' => $file->getClientOriginalName(), 'url' => route('media.show', basename($path)), 'is_image' => $isImage], 201);
         }
 
         return back()->with('success', 'File uploaded. Select it in Images & downloads or a story.')->with('uploaded', $path);

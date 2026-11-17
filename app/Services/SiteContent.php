@@ -23,6 +23,7 @@ class SiteContent
     public function definitions(): array
     {
         $definitions = config('content');
+        $definitions['home']['fields']['featured_story']['options'] = ['' => 'Show all stories'] + array_map(fn (array $story): string => $story['title'], config('idealwoman.stories'));
         foreach (config('idealwoman.work') as $slug => $work) {
             $work['alt'] ??= '';
             $fields = [];
@@ -30,9 +31,14 @@ class SiteContent
                 if ($key === 'icon') {
                     continue;
                 }
-                $fields[$key] = ['label' => ucfirst($key), 'default' => $value ?? '', 'type' => $key === 'image' ? 'asset' : (in_array($key, ['description', 'detail']) ? 'textarea' : 'text')];
+                $fields[$key] = ['label' => match ($key) {
+                    'description' => 'Home page card description',
+                    'detail' => 'Full programme description',
+                    'alt' => 'Photograph description',
+                    default => ucfirst($key),
+                }, 'default' => $value ?? '', 'type' => $key === 'image' ? 'asset' : (in_array($key, ['description', 'detail']) ? 'textarea' : 'text'), 'group' => in_array($key, ['image', 'alt']) ? 'Programme photograph' : 'Programme content'];
             }
-            $fields['objectives'] = ['label' => 'Objectives (one per line)', 'default' => implode("\n", config('idealwoman.objectives.'.$slug, [])), 'type' => 'textarea'];
+            $fields['objectives'] = ['label' => 'Objectives (one per line)', 'default' => implode("\n", config('idealwoman.objectives.'.$slug, [])), 'type' => 'textarea', 'group' => 'Programme content'];
             $definitions['programme-'.$slug] = ['label' => $work['title'], 'fields' => $fields];
         }
         $fields = [];
@@ -54,6 +60,51 @@ class SiteContent
         $definitions['media'] = ['label' => 'Images & downloads', 'fields' => $images];
 
         return $definitions;
+    }
+
+    public function pageRoute(string $slug): string
+    {
+        return match (true) {
+            str_starts_with($slug, 'programme-'), $slug === 'galleries' => 'work',
+            $slug === 'leadership' => 'about',
+            in_array($slug, ['collaboration', 'profile-download']) => 'involved',
+            $slug === 'story' => 'stories',
+            in_array($slug, ['home', 'about', 'work', 'stories', 'involved', 'contact']) => $slug,
+            default => 'home',
+        };
+    }
+
+    public function editorUrl(string $slug): string
+    {
+        if (str_starts_with($slug, 'story-')) {
+            $record = ContentSection::query()->where('slug', $slug)->where('kind', 'story')->first();
+
+            return $record ? route('admin.stories.edit', $record) : route('admin.stories.index');
+        }
+
+        return route('admin.content.edit', $slug);
+    }
+
+    /** @return array<int, array{name: string, alt: string}> */
+    public function gallery(string $name): array
+    {
+        $photos = [];
+        foreach (config('content.galleries.fields', []) as $key => $field) {
+            if (str_starts_with($key, $name.'_') && str_ends_with($key, '_image')) {
+                $image = $this->text('galleries.'.$key);
+                if ($image !== '') {
+                    $photos[] = ['name' => $image, 'alt' => $this->text('galleries.'.substr($key, 0, -6).'_alt')];
+                }
+            }
+        }
+
+        return $photos;
+    }
+
+    /** @return array<int, array{value: string, label: string, url: string}> */
+    public function imageOptions(): array
+    {
+        return array_map(fn (string $name): array => ['value' => $name, 'label' => ucwords(str_replace('-', ' ', $name)), 'url' => $this->photo($name)['src']], $this->imageNames());
     }
 
     /** @return array<string, string> */

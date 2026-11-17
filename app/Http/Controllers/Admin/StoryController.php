@@ -19,16 +19,16 @@ class StoryController extends Controller
         return view('admin.stories', ['stories' => ContentSection::query()->where('kind', 'story')->latest('id')->paginate(15)]);
     }
 
-    public function create(): View
+    public function create(SiteContent $content): View
     {
-        return view('admin.story', ['record' => null, 'values' => [], 'images' => $this->images(), 'revisions' => collect()]);
+        return view('admin.story', ['record' => null, 'values' => [], 'assetOptions' => $content->imageOptions(), 'revisions' => collect()]);
     }
 
-    public function edit(ContentSection $story): View
+    public function edit(ContentSection $story, SiteContent $content): View
     {
         abort_unless($story->kind === 'story', 404);
 
-        return view('admin.story', ['record' => $story, 'values' => $story->draft, 'images' => $this->images(), 'revisions' => $story->revisions()->with('author')->latest('id')->limit(20)->get()]);
+        return view('admin.story', ['record' => $story, 'values' => $story->draft, 'assetOptions' => $content->imageOptions(), 'revisions' => $story->revisions()->with('author')->latest('id')->limit(20)->get()]);
     }
 
     public function store(SaveStoryRequest $request, SiteContent $content): RedirectResponse
@@ -66,7 +66,10 @@ class StoryController extends Controller
         if (! in_array($data['image'], $this->images(), true)) {
             throw ValidationException::withMessages(['image' => 'Choose an image from the library.']);
         }
-        $record = $content->save($slug, $data['title'], 'story', $data, $request->validated('action'), $request->user(), $request->integer('version'));
+        $record = $content->save($slug, $data['title'], 'story', $data, $request->validated('action') === 'preview' ? 'draft' : $request->validated('action'), $request->user(), $request->integer('version'));
+        if ($request->validated('action') === 'preview') {
+            return to_route('stories.show', ['slug' => substr($slug, 6), 'preview' => $slug]);
+        }
 
         return to_route('admin.stories.edit', $record)->with('success', $request->validated('action') === 'publish' ? 'Story published.' : 'Story draft saved.');
     }
