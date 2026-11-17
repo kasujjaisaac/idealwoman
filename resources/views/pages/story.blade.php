@@ -3,7 +3,7 @@
 @if($slug === 'students-championing-peace')
     <section class="section wrap" aria-labelledby="peace-gallery-heading">
         <div class="section-heading"><div><p class="eyebrow">{{ $site->text('story.text_003') }}</p><h2 id="peace-gallery-heading">{{ $site->text('story.text_004') }}</h2></div><p>{{ $site->text('story.text_005') }}<br>{{ $site->text('story.text_006') }}</p></div>
-        <div class="grid items-start gap-8 md:grid-cols-2">
+        <div class="activity-gallery grid items-start gap-8 md:grid-cols-2">
             @foreach([
                 ['name' => 'peace-club-students', 'alt' => 'Students in orange shirts and adults gathered beside a Girl Child in Peace Building club sign.', 'width' => 1600, 'height' => 1063],
                 ['name' => 'peace-club-community', 'alt' => 'A group of students and adults posing together in a school garden beside the peace-building club sign.', 'width' => 1600, 'height' => 1063],

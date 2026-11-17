@@ -6,6 +6,8 @@ use RuntimeException;
 
 class ImageOptimizer
 {
+    private const int WEBP_QUALITY = 82;
+
     /** @return array{width: int, height: int, version: string, variants: array<int, string>} */
     public function generate(string $source, string $directory, string $name): array
     {
@@ -45,7 +47,7 @@ class ImageOptimizer
             $filename = $name.'-'.$size.'.webp';
             $temporary = tempnam($directory, 'image-');
             try {
-                if (! imagewebp($resized, $temporary, 76) || ! rename($temporary, $directory.'/'.$filename)) {
+                if (! imagewebp($resized, $temporary, self::WEBP_QUALITY) || ! rename($temporary, $directory.'/'.$filename)) {
                     throw new RuntimeException('The optimised image could not be saved.');
                 }
                 chmod($directory.'/'.$filename, 0644);
@@ -57,6 +59,6 @@ class ImageOptimizer
             $variants[$size] = $filename;
         }
 
-        return ['width' => $width, 'height' => $height, 'version' => substr(hash('sha256', hash_file('sha256', $source).'webp-76-v1'), 0, 12), 'variants' => $variants];
+        return ['width' => $width, 'height' => $height, 'version' => substr(hash('sha256', hash_file('sha256', $source).'webp-'.self::WEBP_QUALITY.'-v1'), 0, 12), 'variants' => $variants];
     }
 }

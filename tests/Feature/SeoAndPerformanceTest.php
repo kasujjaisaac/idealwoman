@@ -93,7 +93,7 @@ class SeoAndPerformanceTest extends TestCase
         config(['idealwoman.google_site_verification' => 'verification-token']);
 
         $this->get('/')->assertOk()->assertSee('name="google-site-verification" content="verification-token"', false)
-            ->assertDontSee('data-slide-pause', false)->assertSee('Previous photograph')->assertSee('Next photograph')
+            ->assertSee('data-slide-pause', false)->assertSee('Previous photograph')->assertSee('Next photograph')
             ->assertSee('data-srcset=', false)->assertSee('fetchpriority="high"', false);
     }
 }

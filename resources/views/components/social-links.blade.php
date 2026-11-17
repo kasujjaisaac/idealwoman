@@ -1,17 +1,12 @@
 @props(['label' => 'Follow Ideal Woman'])
 @php
-    $socials = config('idealwoman.social_links', []);
+    $socials = array_filter(config('idealwoman.social_links', []), fn ($url) => is_string($url) && filter_var($url, FILTER_VALIDATE_URL) && str_starts_with($url, 'https://'));
     $names = ['facebook' => 'Facebook', 'instagram' => 'Instagram', 'threads' => 'Threads', 'x' => 'X', 'linkedin' => 'LinkedIn', 'youtube' => 'YouTube', 'tiktok' => 'TikTok'];
 @endphp
 @if(count($socials))
 <div class="social-links" role="group" aria-label="{{ $label }}">
     @foreach($socials as $platform => $url)
-        @php($linked = is_string($url) && filter_var($url, FILTER_VALIDATE_URL) && str_starts_with($url, 'https://'))
-        @if($linked)
-            <a class="social-link" href="{{ $url }}" target="_blank" rel="noopener noreferrer" aria-label="Ideal Woman on {{ $names[$platform] }} (opens in a new tab)" title="{{ $names[$platform] }}">
-        @else
-            <span class="social-link social-placeholder" role="img" aria-label="{{ $names[$platform] }} profile link coming soon" title="{{ $names[$platform] }}: link coming soon">
-        @endif
+        <a class="social-link" href="{{ $url }}" target="_blank" rel="noopener noreferrer" aria-label="Ideal Woman on {{ $names[$platform] }} (opens in a new tab)" title="{{ $names[$platform] }}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 @switch($platform)
                     @case('facebook')<path d="M14 21v-8h3l.5-4H14V7c0-1 .4-2 2-2h2V1.5A22 22 0 0 0 15 1c-3 0-5 2-5 5v3H7v4h3v8"/>@break
@@ -23,7 +18,7 @@
                     @case('tiktok')<path d="M14 3h3c.3 3 2 4.5 4 5v3c-2 0-3-.5-4-1.5V16a6 6 0 1 1-7-6v3a3 3 0 1 0 4 3Z"/>@break
                 @endswitch
             </svg>
-        @if($linked)</a>@else</span>@endif
+        </a>
     @endforeach
 </div>
 @endif

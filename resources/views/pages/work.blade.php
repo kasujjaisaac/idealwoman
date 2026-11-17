@@ -1,8 +1,23 @@
-<x-layout :title="$site->text('work.text_001')" :description="$site->text('work.text_002')">
+<x-layout :title="$site->text('work.text_001')" :description="$site->text('work.text_002')" image="climate-briquette-workshop.jpg">
 <x-page-heading :eyebrow="$site->text('work.text_003')" :title="$site->text('work.text_004')" :intro="$site->text('work.text_005')"/>
 <section class="wrap work-navigation"><p>{{ $site->text('work.text_006') }}</p><nav aria-label="Work areas">@foreach(config('idealwoman.work') as $slug => $work)<a href="#{{ $slug }}">{{ $work['title'] }}</a>@endforeach</nav></section>
 @foreach(config('idealwoman.work') as $slug => $work)
 <section id="{{ $slug }}" class="section work-detail {{ $loop->even ? 'work-section' : '' }}"><div class="wrap grid items-center gap-12 lg:grid-cols-2"><div><p class="eyebrow">Our objectives / 0{{ $loop->iteration }}</p><x-icon :name="$work['icon']" class="work-icon"/><h2>{{ $work['title'] }}</h2><p class="lede">{{ $work['intro'] }}</p><p>{{ $work['detail'] }}</p><ul class="profile-objectives">@foreach(config('idealwoman.objectives.'.$slug, []) as $objective)<li>{{ $objective }}</li>@endforeach</ul><a class="button action-button" href="{{ route('contact', ['type' => 'General enquiry']) }}">{{ $site->text('work.text_008') }}</a></div>@if($work['image'])<x-photo :name="$work['image']" :alt="$work['alt']"/>@else<div class="objective-panel"><x-icon :name="$work['icon']"/><p>{{ $work['description'] }}</p><span>{{ $site->text('work.text_009') }}</span></div>@endif</div></section>
+@if($slug === 'climate-change')
+    <div class="wrap activity-gallery grid items-start gap-8 pb-12 md:grid-cols-2" aria-label="Climate change activity photos">
+        @foreach([
+            ['name' => 'climate-biomass', 'alt' => 'Charred plant material being prepared during the climate activity.'],
+            ['name' => 'climate-organic-materials', 'alt' => 'Sacks and a wheelbarrow filled with collected plant materials.'],
+            ['name' => 'climate-community-training', 'alt' => 'Community members gathered for a practical training session.'],
+            ['name' => 'climate-plastic-collection', 'alt' => 'Plastic bottles collected in sacks during a waste collection activity.'],
+        ] as $photo)
+            <figure>
+                <x-photo :name="$photo['name']" :alt="$photo['alt']" sizes="(min-width: 1280px) 584px, (min-width: 768px) 50vw, 100vw"/>
+                <figcaption>{{ $photo['alt'] }}</figcaption>
+            </figure>
+        @endforeach
+    </div>
+@endif
 @endforeach
 <section class="section wrap" aria-labelledby="work-activities-heading">
     <div class="section-heading">

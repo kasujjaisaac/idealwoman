@@ -5,13 +5,27 @@
     $indexable = config('idealwoman.indexable') && ! request()->has('preview');
     $socialProfiles = array_values(array_filter(config('idealwoman.social_links', []), fn ($url) => is_string($url) && filter_var($url, FILTER_VALIDATE_URL) && str_starts_with($url, 'https://')));
     $organisationId = rtrim(config('app.url'), '/').'#organisation';
+    $websiteId = rtrim(config('app.url'), '/').'#website';
+    $pageUrl = url()->current();
+    $pageImage = $site->media(pathinfo($image, PATHINFO_FILENAME), asset('images/'.$image));
+    $breadcrumbs = [['@type' => 'ListItem', 'position' => 1, 'name' => 'Home', 'item' => route('home')]];
+    if (request()->routeIs('stories.show')) {
+        $breadcrumbs[] = ['@type' => 'ListItem', 'position' => 2, 'name' => $site->text('navigation.stories'), 'item' => route('stories')];
+    }
+    if (! request()->routeIs('home')) {
+        $breadcrumbs[] = ['@type' => 'ListItem', 'position' => count($breadcrumbs) + 1, 'name' => $title, 'item' => $pageUrl];
+    }
     $structuredData = [
         '@context' => 'https://schema.org',
         '@graph' => [
             ['@type' => 'Organization', '@id' => $organisationId, 'name' => 'Ideal Woman Community Based Organisation', 'url' => config('app.url'), 'logo' => $site->media('logo', asset('images/logo.png')), 'email' => $site->text('settings.email'), 'telephone' => [$site->text('settings.phone'), $site->text('settings.secondary_phone')], 'sameAs' => $socialProfiles, 'address' => ['@type' => 'PostalAddress', 'streetAddress' => 'Muto Complex, Main Floor, Room 42', 'addressLocality' => 'Masaka City', 'addressCountry' => 'UG']],
-            ['@type' => request()->routeIs('stories.show') ? 'Article' : 'WebPage', 'name' => $title, 'headline' => $title, 'description' => $pageDescription, 'url' => url()->current(), 'image' => $site->media(pathinfo($image, PATHINFO_FILENAME), asset('images/'.$image)), 'publisher' => ['@id' => $organisationId]],
+            ['@type' => request()->routeIs('stories.show') ? 'Article' : 'WebPage', '@id' => $pageUrl.'#webpage', 'name' => $title, 'headline' => $title, 'description' => $pageDescription, 'url' => $pageUrl, 'image' => $pageImage, 'inLanguage' => 'en', 'isPartOf' => ['@id' => $websiteId], 'mainEntityOfPage' => $pageUrl, 'author' => ['@id' => $organisationId], 'publisher' => ['@id' => $organisationId]],
+            ['@type' => 'WebSite', '@id' => $websiteId, 'name' => 'Ideal Woman', 'url' => route('home'), 'inLanguage' => 'en', 'publisher' => ['@id' => $organisationId]],
         ],
     ];
+    if (! request()->routeIs('home')) {
+        $structuredData['@graph'][] = ['@type' => 'BreadcrumbList', 'itemListElement' => $breadcrumbs];
+    }
 @endphp
 <!DOCTYPE html>
 <html lang="en">
@@ -29,9 +43,15 @@
     <meta property="og:title" content="{{ $pageTitle }}">
     <meta property="og:description" content="{{ $pageDescription }}">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:image" content="{{ $site->media(pathinfo($image, PATHINFO_FILENAME), asset('images/'.$image)) }}">
+    <meta property="og:image" content="{{ $pageImage }}">
+    <meta property="og:image:alt" content="{{ $title }} — Ideal Woman community activities in Uganda">
+    <meta property="og:locale" content="en_UG">
     <meta property="og:site_name" content="Ideal Woman">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $pageTitle }}">
+    <meta name="twitter:description" content="{{ $pageDescription }}">
+    <meta name="twitter:image" content="{{ $pageImage }}">
+    <meta name="twitter:image:alt" content="{{ $title }} — Ideal Woman community activities in Uganda">
     <meta name="theme-color" content="#153CC6">
     <link rel="icon" type="image/png" href="{{ $site->media('logo', asset('images/logo.png')) }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])

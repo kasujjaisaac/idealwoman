@@ -21,7 +21,7 @@ return [
         'leadership-rights' => ['title' => 'Leadership & Rights', 'icon' => 'leadership', 'intro' => 'Every voice has possibility.', 'description' => 'Self-discovery, leadership, women\'s rights, talent, sports and cultural participation.', 'detail' => 'We aim to support self-discovery, life-choice skills, leadership and talent development. Our objectives also encompass women\'s rights and access to legal support, inclusion, gender equality, sports and cultural heritage. Legal representation is not offered or booked through this website.', 'image' => 'dialogue', 'alt' => 'Participants and facilitators seated together during a group discussion.'],
         'community-environment' => ['title' => 'Community & Environment', 'icon' => 'community', 'intro' => 'Stronger communities, together.', 'description' => 'Volunteering, community engagement, clean-ups, tree planting, recycling and environmental protection.', 'detail' => 'Our community objectives bring people together through volunteering and outreach. Environmental priorities include waste collection, tree planting, plastic recycling, wetland protection and responsible management of shared resources.', 'image' => null],
         'women-empowerment' => ['title' => 'Women Empowerment', 'icon' => 'leadership', 'intro' => 'Confidence, voice and opportunity.', 'description' => 'Supporting women to build confidence, develop skills and participate in community life.', 'detail' => 'Women empowerment connects our work in skills, education, leadership and rights. We support women and girls to make informed choices, build independence and contribute to their communities.', 'image' => 'women-empowerment', 'alt' => 'Women gathered outdoors making beadwork and crafts together.'],
-        'climate-change' => ['title' => 'Climate Change', 'icon' => 'community', 'intro' => 'Building climate-aware communities.', 'description' => 'Climate awareness, environmental protection and community participation.', 'detail' => 'Climate change is part of our work with women, girls and communities. We connect environmental awareness with community participation and care for shared resources.', 'image' => null],
+        'climate-change' => ['title' => 'Climate Change', 'icon' => 'community', 'intro' => 'Building climate-aware communities.', 'description' => 'Climate awareness, environmental protection and community participation.', 'detail' => 'Climate change is part of our work with women, girls and communities. We connect environmental awareness with community participation and care for shared resources.', 'image' => 'climate-briquette-workshop', 'alt' => 'Community members taking part in a briquette-making workshop outdoors.'],
     ],
     'objectives' => [
         'skills-livelihoods' => [
@@ -42,7 +42,7 @@ return [
         'leadership-rights' => [
             'Self-discovery, talent development, leadership, management and informed life choices.',
             'Inclusion, gender equality and equity among women, girls and youth.',
-            'Women?s human rights and access to legal support on business, economic, social and family matters.',
+            'Women\'s human rights and access to legal support on business, economic, social and family matters.',
             'Participation in sports, games, aerobics, talent search, beauty pageants, fashion, modelling and awards.',
             'Cultural heritage and a strong values foundation in support of women\'s emancipation.',
         ],

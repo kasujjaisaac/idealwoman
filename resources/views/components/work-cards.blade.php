@@ -13,7 +13,6 @@
             <div class="work-card-body">
             <div class="card-top">
                 <span class="work-icon-panel"><x-icon :name="$work['icon']"/></span>
-                <span class="card-number" aria-hidden="true">0{{ $loop->iteration }}</span>
             </div>
             <h3>{{ $work['title'] }}</h3>
             <p>{{ $work['description'] }}</p>

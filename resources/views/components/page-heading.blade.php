@@ -2,11 +2,13 @@
 <section class="page-heading compact-hero">
     <div class="wrap">
         <div class="page-hero-copy">
-        @if($backUrl)
-            <a class="hero-breadcrumb" href="{{ $backUrl }}"> {{ $backLabel }}</a>
-        @else
+        <nav class="page-breadcrumbs" aria-label="Breadcrumb">
             <a class="hero-breadcrumb" href="{{ route('home') }}">Home</a>
-        @endif
+            @if($backUrl && $backUrl !== route('home'))
+                <span aria-hidden="true">/</span><a class="hero-breadcrumb" href="{{ $backUrl }}">{{ $backLabel }}</a>
+            @endif
+            <span aria-hidden="true">/</span><span aria-current="page">{{ $title }}</span>
+        </nav>
         <p class="eyebrow light">{{ $eyebrow }}</p>
         <h1>{{ $title }}</h1>
         <p class="lede">{{ $intro }}</p>
