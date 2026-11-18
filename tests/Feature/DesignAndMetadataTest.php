@@ -11,7 +11,7 @@ class DesignAndMetadataTest extends TestCase
 {
     public static function publicPages(): array
     {
-        return [['/'], ['/about'], ['/our-work'], ['/stories'], ['/get-involved'], ['/contact'], ['/stories/students-championing-peace'], ['/stories/learning-through-making']];
+        return [['/'], ['/about'], ['/our-work'], ['/stories'], ['/get-involved'], ['/volunteer-with-us'], ['/contact'], ['/stories/students-championing-peace'], ['/stories/learning-through-making']];
     }
 
     #[DataProvider('publicPages')]
@@ -66,7 +66,7 @@ class DesignAndMetadataTest extends TestCase
         config(['idealwoman.social_links.linkedin' => null, 'idealwoman.social_links.tiktok' => '']);
 
         $this->get('/')->assertOk()->assertSee('images/together.jpg')
-            ->assertSee('Pause slideshow')->assertDontSee('profile link coming soon')
+            ->assertSee('Reduce motion and pause slideshow')->assertDontSee('data-slide-pause', false)->assertDontSee('profile link coming soon')
             ->assertDontSee('class="card-number"', false);
     }
 

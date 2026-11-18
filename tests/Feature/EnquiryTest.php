@@ -112,6 +112,29 @@ class EnquiryTest extends TestCase
         $mail->assertDontSeeInHtml('<script>', false);
     }
 
+    public function test_support_and_volunteer_enquiries_return_to_their_own_pages_after_success(): void
+    {
+        config(['idealwoman.enquiries_enabled' => true, 'mail.default' => 'smtp', 'mail.mailers.smtp' => ['transport' => 'array']]);
+
+        foreach (['involved' => '/get-involved', 'volunteer' => '/volunteer-with-us'] as $route => $path) {
+            $this->from($path)->post('/contact', $this->payload(['return_to' => $route]))
+                ->assertRedirect($path)->assertSessionHas('success');
+        }
+
+        $this->assertDatabaseCount('enquiries', 2);
+        $this->assertDatabaseHas('enquiries', ['email' => 'visitor@example.org', 'message' => 'We would like to discuss a practical skills collaboration.']);
+    }
+
+    public function test_enquiry_return_destination_cannot_redirect_to_an_external_site(): void
+    {
+        Mail::fake();
+
+        $this->from('/get-involved')->post('/contact', $this->payload(['return_to' => 'https://example.org']))
+            ->assertRedirect('/get-involved')->assertSessionHasErrors('return_to');
+
+        Mail::assertNothingSent();
+    }
+
     public function test_sixth_attempt_is_rate_limited(): void
     {
         Mail::fake();

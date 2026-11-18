@@ -21,6 +21,7 @@ Route::get('/stories/{slug}', function (string $slug) {
     return view('pages.story', compact('story', 'slug'));
 })->where('slug', '[a-z0-9-]+')->name('stories.show');
 Route::view('/get-involved', 'pages.involved')->name('involved');
+Route::view('/volunteer-with-us', 'pages.volunteer')->name('volunteer');
 Route::view('/contact', 'pages.contact')->name('contact');
 Route::post('/contact', [EnquiryController::class, 'store'])->middleware('throttle:5,10')->name('enquiries.store');
 Route::get('/sitemap.xml', function () {

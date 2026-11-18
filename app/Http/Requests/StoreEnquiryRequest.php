@@ -21,6 +21,7 @@ class StoreEnquiryRequest extends FormRequest
             'enquiry_type' => ['required', Rule::in(['Partnership', 'Training & mentorship', 'Equipment & programme support', 'Market access', 'Volunteering', 'General enquiry'])],
             'message' => ['required', 'string', 'min:20', 'max:5000'],
             'website' => ['nullable', 'string', 'max:0'],
+            'return_to' => ['sometimes', 'required', Rule::in(['contact', 'involved', 'volunteer'])],
         ];
     }
 

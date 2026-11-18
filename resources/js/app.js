@@ -1,6 +1,15 @@
+import { initializeTranslation } from './translation';
 import { initializeAccessibility } from './accessibility';
 
 initializeAccessibility();
+
+initializeTranslation();
+
+const formFeedback = document.querySelector('.enquiry-panel .alert');
+if (formFeedback) {
+    formFeedback.tabIndex = -1;
+    formFeedback.focus();
+}
 
 const toggle = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('#main-navigation');
@@ -35,7 +44,6 @@ if (slider) {
     const controls = slider.querySelector('.slider-side-controls');
     const announcement = slider.querySelector('.slide-announcement');
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-    const pauseControl = slider.querySelector('[data-slide-pause]');
     let current = 0;
     let requested = 0;
     let changeId = 0;
@@ -52,8 +60,6 @@ if (slider) {
         }
         announcement.setAttribute('aria-live', paused || hovered || focused ? 'polite' : 'off');
         slider.dataset.paused = String(paused || hovered || focused);
-        pauseControl.textContent = paused ? 'Resume slideshow' : 'Pause slideshow';
-        pauseControl.setAttribute('aria-pressed', String(paused));
     };
     const showSlide = async (step) => {
         requested = (requested + step + slides.length) % slides.length;
@@ -85,10 +91,6 @@ if (slider) {
         updateRotation();
     };
     controls.hidden = false;
-    pauseControl.addEventListener('click', () => {
-        paused = !paused;
-        updateRotation();
-    });
     slider.addEventListener('mouseenter', () => { hovered = true; updateRotation(); });
     slider.addEventListener('mouseleave', () => { hovered = false; updateRotation(); });
     slider.addEventListener('focusin', () => { focused = true; updateRotation(); });

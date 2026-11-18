@@ -53,6 +53,29 @@ export function initializeAccessibility() {
     });
     apply();
     panel.hidden = false;
+    const dialog = panel.querySelector('dialog');
+    if (dialog) {
+        panel.addEventListener('toggle', () => {
+            if (panel.open && !dialog.open) dialog.showModal();
+            if (!panel.open && dialog.open) dialog.close();
+        });
+        dialog.addEventListener('close', () => {
+            panel.open = false;
+        });
+        dialog.querySelector('[data-access-close]').addEventListener('click', () => dialog.close());
+        dialog.addEventListener('click', (event) => {
+            if (event.target !== dialog) return;
+            const bounds = dialog.getBoundingClientRect();
+            if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) {
+                dialog.close();
+            }
+        });
+    }
+    document.addEventListener('click', (event) => {
+        document.querySelectorAll('.access-panel[open]').forEach((details) => {
+            if (!details.contains(event.target)) details.open = false;
+        });
+    });
     document.querySelectorAll('.access-panel').forEach((details) => {
         details.addEventListener('toggle', () => {
             if (!details.open) return;

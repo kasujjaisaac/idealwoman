@@ -12,6 +12,8 @@ test('invalid stored preferences fall back to safe defaults', () => {
 function browser(stored, blocked = false) {
     const classes = new Set();
     const events = [];
+    const listeners = {};
+    const panels = [];
     const status = { textContent: '' };
     const reset = { addEventListener: (_, handler) => { reset.click = handler; } };
     const controls = ['textSize', 'theme', 'contrast', 'links', 'spacing', 'motion'].map((key) => ({
@@ -22,11 +24,12 @@ function browser(stored, blocked = false) {
     const panel = {
         hidden: true,
         querySelectorAll: () => controls,
-        querySelector: (selector) => selector === '[data-access-reset]' ? reset : status,
+        querySelector: (selector) => selector === '[data-access-reset]' ? reset : selector === '[data-access-status]' ? status : null,
     };
     globalThis.document = {
         querySelector: () => panel,
-        querySelectorAll: () => [],
+        querySelectorAll: () => panels,
+        addEventListener: (name, handler) => { listeners[name] = handler; },
         documentElement: {
             style: {},
             dataset: {},
@@ -39,8 +42,58 @@ function browser(stored, blocked = false) {
         getItem() { if (blocked) throw new Error('blocked'); return stored; },
         setItem(_, value) { if (blocked) throw new Error('blocked'); stored = value; },
     };
-    return { panel, controls, reset, classes, events, status, stored: () => stored };
+    return { panel, controls, reset, classes, events, status, panels, listeners, stored: () => stored };
 }
+
+test('outside clicks close panels while clicks inside keep the active panel open', () => {
+    const ui = browser(null);
+    const insideTranslate = {};
+    const translate = { open: true, contains: (target) => target === insideTranslate, addEventListener() {} };
+    const accessibility = { open: true, contains: () => false, addEventListener() {} };
+    ui.panels.push(translate, accessibility);
+    initializeAccessibility();
+
+    ui.listeners.click({ target: insideTranslate });
+    assert.equal(translate.open, true);
+    assert.equal(accessibility.open, false);
+
+    ui.listeners.click({ target: {} });
+    assert.equal(translate.open, false);
+});
+
+test('accessibility opens as a modal and closes through its button or backdrop', () => {
+    const ui = browser(null);
+    const handlers = {};
+    let onToggle;
+    let onCloseClick;
+    const dialog = {
+        open: false,
+        showModal() { this.open = true; },
+        close() { this.open = false; handlers.close(); },
+        addEventListener(name, handler) { handlers[name] = handler; },
+        querySelector: () => ({ addEventListener: (_, handler) => { onCloseClick = handler; } }),
+        getBoundingClientRect: () => ({ left: 100, top: 100, right: 500, bottom: 600 }),
+    };
+    const originalQuery = ui.panel.querySelector;
+    ui.panel.querySelector = (selector) => selector === 'dialog' ? dialog : originalQuery(selector);
+    ui.panel.addEventListener = (_, handler) => { onToggle = handler; };
+    initializeAccessibility();
+
+    ui.panel.open = true;
+    onToggle();
+    assert.equal(dialog.open, true);
+    handlers.click({ target: dialog, clientX: 200, clientY: 200 });
+    assert.equal(dialog.open, true);
+    onCloseClick();
+    assert.equal(dialog.open, false);
+    assert.equal(ui.panel.open, false);
+
+    ui.panel.open = true;
+    onToggle();
+    handlers.click({ target: dialog, clientX: 20, clientY: 20 });
+    assert.equal(dialog.open, false);
+    assert.equal(ui.panel.open, false);
+});
 
 test('saved preferences apply on page load, changes persist, and reset restores defaults', () => {
     const ui = browser('{"textSize":"125","motion":true,"contrast":true}');

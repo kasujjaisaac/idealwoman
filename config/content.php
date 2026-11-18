@@ -266,7 +266,7 @@ $content = ['settings' => ['label' => 'Contact & site settings',
                 'default' => 'Leave this field empty',
                 'type' => 'text'],
             'text_032' => ['label' => 'We use the details you provide to respond to your enquiry. Messages are sent to the I',
-                'default' => 'We use the details you provide to respond to your enquiry. Messages are sent to the Ideal Woman team by email and are not stored in a website database.',
+                'default' => 'We use your details to respond to your enquiry. Successfully sent enquiries are emailed to the Ideal Woman team and saved for follow-up by authorised staff.',
                 'type' => 'textarea'],
             'text_033' => ['label' => 'Send enquiry',
                 'default' => 'Send enquiry',
@@ -748,8 +748,16 @@ foreach ([['Institutional partnerships', 'Explore shared projects with governmen
         $content['collaboration']['fields']['opportunity_'.$index.'_'.$key] = ['label' => 'Opportunity '.($index + 1).' '.ucfirst($key), 'default' => $opportunity[$position], 'type' => $key === 'description' ? 'textarea' : 'text'];
     }
 }
+$content['volunteer'] = ['label' => 'Volunteer With Us', 'fields' => [
+    'title' => ['label' => 'Page title', 'default' => 'Volunteer With Us', 'type' => 'text'],
+    'description' => ['label' => 'Search description', 'default' => 'Volunteer with Ideal Woman to support girls, young women and communities across Greater Masaka.', 'type' => 'textarea'],
+    'form_heading' => ['label' => 'Form heading', 'default' => 'Tell us about yourself', 'type' => 'text'],
+    'intro' => ['label' => 'Form introduction', 'default' => 'Share your skills, interests and availability, and tell us how you would like to help. Our team will get in touch to discuss volunteering opportunities.', 'type' => 'textarea'],
+    'submit_label' => ['label' => 'Submit button', 'default' => 'Send volunteer enquiry', 'type' => 'text'],
+]];
+
 $content['navigation'] = ['label' => 'Navigation labels', 'fields' => []];
-foreach (['home' => 'Home', 'about' => 'About Us', 'work' => 'Our Work', 'stories' => 'Stories', 'involved' => 'Get Involved', 'contact' => 'Contact'] as $key => $label) {
+foreach (['home' => 'Home', 'about' => 'About Us', 'work' => 'Our Work', 'stories' => 'Stories', 'involved' => 'Get Involved', 'volunteer' => 'Volunteer', 'contact' => 'Contact'] as $key => $label) {
     $content['navigation']['fields'][$key] = ['label' => $label, 'default' => $label, 'type' => 'text'];
 }
 $content['settings']['fields']['map_url'] = ['label' => 'Office map URL', 'default' => 'https://www.google.com/maps/search/?api=1&query=Muto+Complex+Masaka+Uganda', 'type' => 'url'];

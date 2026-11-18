@@ -55,6 +55,7 @@ class SiteContent
             $key = 'partner-'.pathinfo($path, PATHINFO_FILENAME);
             $images[$key] = ['label' => 'Partner: '.ucwords(str_replace('-', ' ', pathinfo($path, PATHINFO_FILENAME))), 'default' => '', 'type' => 'image'];
         }
+        $images['partner-masaka-marathon'] = ['label' => 'Partner: Masaka Marathon', 'default' => '', 'type' => 'image'];
         $images['logo'] = ['label' => 'Website logo & favicon', 'default' => '', 'type' => 'image'];
         $images['profile'] = ['label' => 'Organisational profile (PDF)', 'default' => '', 'type' => 'pdf'];
         $definitions['media'] = ['label' => 'Images & downloads', 'fields' => $images];
@@ -69,7 +70,7 @@ class SiteContent
             $slug === 'leadership' => 'about',
             in_array($slug, ['collaboration', 'profile-download']) => 'involved',
             $slug === 'story' => 'stories',
-            in_array($slug, ['home', 'about', 'work', 'stories', 'involved', 'contact']) => $slug,
+            in_array($slug, ['home', 'about', 'work', 'stories', 'involved', 'volunteer', 'contact']) => $slug,
             default => 'home',
         };
     }

@@ -11,7 +11,6 @@
     <div class="slider-side-controls" hidden>
         <button type="button" class="slide-side previous-slide" data-slide-step="-1" aria-label="Previous photograph"><span aria-hidden="true">&#8249;</span></button>
         <button type="button" class="slide-side next-slide" data-slide-step="1" aria-label="Next photograph"><span aria-hidden="true">&#8250;</span></button>
-        <button type="button" class="slide-pause" data-slide-pause aria-pressed="false">Pause slideshow</button>
         <span class="sr-only slide-announcement" aria-live="off" aria-atomic="true">{{ $site->text('home.text_007') }}</span>
     </div>
     <div class="wrap slider-content">
@@ -22,11 +21,8 @@
 
     </div>
 </section>
-@if($site->text('home.show_principles') !== 'hide')
-<section class="principles" aria-label="Our principles"><div class="wrap grid gap-6 md:grid-cols-3"><div><x-icon name="pin"/><span>{{ $site->text('home.text_016') }}</span></div><div><x-icon name="community"/><span>{{ $site->text('home.text_017') }}</span></div><div><x-icon name="opportunity"/><span>{{ $site->text('home.text_018') }}</span></div></div></section>
-@endif
 @if($site->text('home.show_about') !== 'hide')
-<section class="section wrap about-intro grid items-center gap-12 lg:grid-cols-2"><div class="image-frame"><x-photo :name="$site->text('home.about_image')" :alt="$site->text('home.text_005')"/><span class="image-note">{{ $site->text('home.text_019') }}</span></div><div class="section-copy"><p class="eyebrow">{{ $site->text('home.text_020') }}</p><h2>{{ $site->text('home.text_021') }}<br>{{ $site->text('home.text_022') }}</h2><p class="lede">{{ $site->text('home.text_023') }}</p><p>{{ $site->text('home.text_024') }}</p><a class="button action-button" href="{{ route('about') }}">{{ $site->text('home.text_025') }}</a></div></section>
+<section class="section wrap about-intro grid items-center gap-12 lg:grid-cols-2"><div class="image-frame"><x-photo :name="$site->text('home.about_image')" :alt="$site->text('home.text_005')"/></div><div class="section-copy"><p class="eyebrow">{{ $site->text('home.text_020') }}</p><h2>{{ $site->text('home.text_021') }}<br>{{ $site->text('home.text_022') }}</h2><p class="lede">{{ $site->text('home.text_023') }}</p><p>{{ $site->text('home.text_024') }}</p><a class="button action-button" href="{{ route('about') }}">{{ $site->text('home.text_025') }}</a></div></section>
 @endif
 @if($site->text('home.show_work') !== 'hide')
 <section class="section work-section"><div class="wrap"><div class="section-heading"><div><p class="eyebrow">{{ $site->text('home.text_026') }}</p><h2>{{ $site->text('home.text_027') }}<br>{{ $site->text('home.text_028') }}</h2></div><p>{{ $site->text('home.text_029') }}<br>{{ $site->text('home.text_030') }}</p></div><x-work-cards/></div></section>
@@ -87,8 +83,9 @@
                 <p class="partner-name">{{ $site->text('home.text_050') }}</p>
             </li>
             <li class="partner-card">
-                @if (is_file(public_path('images/partners/masaka-marathon.png')))
-                <div class="partner-logo"><img src="{{ $site->media('partner-masaka-marathon', asset('images/partners/masaka-marathon.png')) }}" alt="" loading="lazy" decoding="async" width="247" height="95"></div>
+                @php($marathonLogo = $site->media('partner-masaka-marathon', is_file(public_path('images/partners/masaka-marathon.jpg')) ? asset('images/partners/masaka-marathon.jpg') : ''))
+                @if ($marathonLogo !== '')
+                <div class="partner-logo"><img src="{{ $marathonLogo }}" alt="" loading="lazy" decoding="async" width="738" height="285"></div>
                 @endif
                 <p class="partner-name">{{ $site->text('home.text_051') }}</p>
             </li>

@@ -14,13 +14,14 @@ class EnquiryController extends Controller
 {
     public function store(StoreEnquiryRequest $request): RedirectResponse
     {
+        $enquiry = $request->safe()->only(['name', 'email', 'organisation', 'enquiry_type', 'message']);
         $failure = 'Your message has not been sent. Please email '.config('idealwoman.enquiries_to').' or call +256 700 947613.';
         if (! config('idealwoman.enquiries_enabled') || config('mail.default') !== 'smtp') {
             return back()->withInput($request->safe()->except('website'))->with('delivery_error', $failure);
         }
 
         try {
-            $sent = Mail::to(config('idealwoman.enquiries_to'))->send(new PartnershipEnquiry($request->safe()->except('website')));
+            $sent = Mail::to(config('idealwoman.enquiries_to'))->send(new PartnershipEnquiry($enquiry));
             if ($sent === null) {
                 return back()->withInput($request->safe()->except('website'))->with('delivery_error', $failure);
             }
@@ -30,8 +31,8 @@ class EnquiryController extends Controller
             return back()->withInput($request->safe()->except('website'))->with('delivery_error', $failure);
         }
 
-        Enquiry::create($request->safe()->except('website'));
+        Enquiry::create($enquiry);
 
-        return to_route('contact')->with('success', 'Thank you. Your enquiry has been accepted by our mail service for delivery to the Ideal Woman team.');
+        return to_route($request->validated('return_to', 'contact'))->with('success', 'Thank you. Your enquiry has been accepted by our mail service for delivery to the Ideal Woman team.');
     }
 }
