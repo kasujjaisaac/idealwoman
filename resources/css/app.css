@@ -866,9 +866,14 @@ h2 { font-weight: 500; }
 .access-tools { position: fixed; right: 16px; top: 45%; z-index: 110; }
 .access-tools-inner { display: grid; gap: 8px; }
 .access-panel { position: relative; }
-.access-panel summary { cursor: pointer; min-height: 44px; padding: 12px 16px; font-size: .875rem; font-weight: 500; background: #153cc6; color: white; border: 1px solid #ffffff80; box-shadow: 0 3px 12px #101e5225; }
+.access-panel summary { cursor: pointer; display: flex; align-items: center; justify-content: center; width: 52px; height: 52px; list-style: none; border-radius: 50%; background: #153cc6; color: white; border: 1px solid #ffffff80; box-shadow: 0 3px 12px #101e5225; }
+.access-panel summary::-webkit-details-marker { display: none; }
+.access-panel summary .icon { width: 26px; height: 26px; color: currentColor; }
+.access-panel summary:hover, .access-panel[open] summary { background: #101e52; }
+.access-tool-label { position: absolute; right: calc(100% + 12px); padding: 6px 12px; background: #101e52; color: white; font-size: .875rem; white-space: nowrap; pointer-events: none; opacity: 0; }
+.access-panel summary:is(:hover, :focus-visible) .access-tool-label { opacity: 1; }
 .access-panel summary:focus-visible { outline: 3px solid #e33d35; outline-offset: 2px; }
-.access-panel-body { position: fixed; right: 190px; top: 15vh; z-index: 100; width: min(340px, calc(100vw - 210px)); max-height: 75vh; overflow-y: auto; overscroll-behavior: contain; padding: 24px; background: white; color: #101e52; border: 1px solid #adbcd4; box-shadow: 0 12px 32px #101e5220; display: grid; gap: 16px; font-size: .9rem; }
+.access-panel-body { position: fixed; right: 84px; top: 15vh; z-index: 100; width: min(340px, calc(100vw - 104px)); max-height: 75vh; overflow-y: auto; overscroll-behavior: contain; padding: 24px; background: white; color: #101e52; border: 1px solid #adbcd4; box-shadow: 0 12px 32px #101e5220; display: grid; gap: 16px; font-size: .9rem; }
 .access-panel form { display: grid; gap: 12px; }
 .access-panel select, .access-panel button { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid #adbcd4; border-radius: 0; font: inherit; }
 .access-panel button { background: #153cc6; color: white; border-color: #153cc6; }
@@ -886,6 +891,7 @@ h2 { font-weight: 500; }
 @media(max-width:600px) {
     .access-tools { top: auto; right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); }
     .access-tools-inner { display: flex; gap: 8px; }
-    .access-panel summary { padding: 10px 12px; font-size: .8125rem; }
+    .access-panel summary { width: 48px; height: 48px; }
+    .access-tool-label { right: 0; bottom: calc(100% + 10px); }
     .access-panel-body { right: 12px; top: auto; bottom: calc(72px + env(safe-area-inset-bottom)); width: min(340px, calc(100vw - 24px)); max-height: calc(100dvh - 100px - env(safe-area-inset-bottom)); }
 }

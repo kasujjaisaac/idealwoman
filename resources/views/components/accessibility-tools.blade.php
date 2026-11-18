@@ -1,7 +1,7 @@
 <div class="access-tools">
     <div class="access-tools-inner">
         <details class="access-panel">
-            <summary>Translate</summary>
+            <summary aria-label="Translate"><x-icon name="translate"/><span class="access-tool-label">Translate</span></summary>
             <div class="access-panel-body">
                 <form action="https://translate.google.com/translate" method="GET" target="_blank" rel="noopener noreferrer">
                     <input type="hidden" name="sl" value="en">
@@ -35,7 +35,7 @@
             </div>
         </details>
         <details class="access-panel" data-accessibility-panel hidden>
-            <summary><span aria-hidden="true">Aa</span> Accessibility</summary>
+            <summary aria-label="Accessibility"><x-icon name="accessibility"/><span class="access-tool-label">Accessibility</span></summary>
             <div class="access-panel-body">
                 <label for="access-text-size">Text size</label>
                 <select id="access-text-size" data-access-preference="textSize">

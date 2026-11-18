@@ -1,6 +1,8 @@
 @props(['name' => 'community'])
 <svg {{ $attributes->class(['icon']) }} viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 @switch($name)
+@case('translate')<path d="M3 7h16M11 3v4M16 7c-1 8-6 13-13 16M6 11c2 5 6 9 11 11M19 29l6-17 6 17M21 24h8"/>@break
+@case('accessibility')<circle cx="16" cy="5" r="3"/><path d="M5 12l11 3 11-3M16 15v7M16 22l-7 8M16 22l7 8M16 15l-5 7M16 15l5 7"/>@break
 @case('phone')<path d="M27 22v5a2 2 0 0 1-2 2C12 28 4 20 3 7a2 2 0 0 1 2-2h5l2 7-4 2c2 5 5 8 10 10l2-4 7 2Z"/>@break
 @case('email')<rect x="3" y="6" width="26" height="20" rx="2"/><path d="m4 8 12 10L28 8"/>@break
 @case('skills')<path d="m5 10 11-6 11 6-11 6zM5 10v12l11 6 11-6V10M16 16v12M10 7l11 6v7"/>@break
