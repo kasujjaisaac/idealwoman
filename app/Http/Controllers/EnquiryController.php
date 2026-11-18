@@ -14,7 +14,7 @@ class EnquiryController extends Controller
 {
     public function store(StoreEnquiryRequest $request): RedirectResponse
     {
-        $failure = 'Your message has not been sent. Please email info@idealwomanuganda.com or call +256 700 947613.';
+        $failure = 'Your message has not been sent. Please email '.config('idealwoman.enquiries_to').' or call +256 700 947613.';
         if (! config('idealwoman.enquiries_enabled') || config('mail.default') !== 'smtp') {
             return back()->withInput($request->safe()->except('website'))->with('delivery_error', $failure);
         }

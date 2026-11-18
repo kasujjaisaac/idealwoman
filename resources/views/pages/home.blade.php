@@ -82,6 +82,16 @@
                 <div class="partner-logo"><img src="{{ $site->media('partner-creative-learning-center', asset('images/partners/creative-learning-center.png')) }}" alt="" loading="lazy" decoding="async" width="240" height="112"></div>
                 <p class="partner-name">{{ $site->text('home.text_049') }}</p>
             </li>
+            <li class="partner-card">
+                <div class="partner-logo"><img src="{{ $site->media('partner-whrds', asset('images/partners/whrds.png')) }}" alt="" loading="lazy" decoding="async" width="137" height="141"></div>
+                <p class="partner-name">{{ $site->text('home.text_050') }}</p>
+            </li>
+            <li class="partner-card">
+                @if (is_file(public_path('images/partners/masaka-marathon.png')))
+                <div class="partner-logo"><img src="{{ $site->media('partner-masaka-marathon', asset('images/partners/masaka-marathon.png')) }}" alt="" loading="lazy" decoding="async" width="247" height="95"></div>
+                @endif
+                <p class="partner-name">{{ $site->text('home.text_051') }}</p>
+            </li>
         </ul>
     </div>
 </section>

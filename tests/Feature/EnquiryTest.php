@@ -23,6 +23,22 @@ class EnquiryTest extends TestCase
         Mail::assertNothingSent();
     }
 
+    public function test_disabled_delivery_shows_one_error_with_the_configured_recipient(): void
+    {
+        config(['idealwoman.enquiries_enabled' => false, 'idealwoman.enquiries_to' => 'enquiries@example.org']);
+        Mail::fake();
+
+        $this->from('/contact')->post('/contact', $this->payload())
+            ->assertRedirect('/contact')->assertSessionHas('delivery_error')->assertSessionMissing('success');
+
+        $this->get('/contact')->assertOk()
+            ->assertSee('Please email enquiries@example.org')
+            ->assertDontSee('Online sending is currently unavailable.')
+            ->assertSee('value="Test Visitor"', false);
+
+        Mail::assertNothingSent();
+    }
+
     public static function invalidInputs(): array
     {
         return [
@@ -71,7 +87,7 @@ class EnquiryTest extends TestCase
         config(['idealwoman.enquiries_enabled' => true, 'mail.default' => 'smtp', 'mail.mailers.smtp' => ['transport' => 'smtp', 'host' => '127.0.0.1', 'port' => 1, 'timeout' => 1]]);
 
         $this->from('/contact')->post('/contact', $this->payload())->assertRedirect('/contact')->assertSessionHas('delivery_error')->assertSessionMissing('success');
-        $this->get('/contact')->assertSee('Your message has not been sent.')->assertSee('info@idealwomanuganda.com')->assertSee('value="Test Visitor"', false);
+        $this->get('/contact')->assertSee('Your message has not been sent.')->assertSee('idealwoman764@gmail.com')->assertSee('value="Test Visitor"', false);
     }
 
     public function test_accepted_transport_sends_correct_enquiry_and_clears_input(): void
@@ -83,7 +99,7 @@ class EnquiryTest extends TestCase
         $messages = Mail::mailer('smtp')->getSymfonyTransport()->messages();
         $this->assertCount(1, $messages);
         $email = $messages->first()->getOriginalMessage();
-        $this->assertSame('info@idealwomanuganda.com', $email->getTo()[0]->getAddress());
+        $this->assertSame('idealwoman764@gmail.com', $email->getTo()[0]->getAddress());
         $this->assertSame('visitor@example.org', $email->getReplyTo()[0]->getAddress());
         $this->assertStringContainsString('practical skills collaboration', $email->getHtmlBody());
     }

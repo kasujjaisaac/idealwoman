@@ -4,7 +4,7 @@ return [
     'indexable' => env('SITE_INDEXABLE', env('APP_ENV', 'local') === 'production'),
     'google_site_verification' => env('GOOGLE_SITE_VERIFICATION'),
     'enquiries_enabled' => env('ENQUIRIES_ENABLED', false),
-    'enquiries_to' => env('ENQUIRIES_TO', 'info@idealwomanuganda.com'),
+    'enquiries_to' => env('ENQUIRIES_TO', 'idealwoman764@gmail.com'),
     'social_links' => [
         'facebook' => env('SOCIAL_FACEBOOK_URL', 'https://www.facebook.com/share/19hy141uyo/?mibextid=wwXIfr'),
         'instagram' => env('SOCIAL_INSTAGRAM_URL', 'https://www.instagram.com/idealwomanuganda?cplk=N3oxbWc4cWtpamFt&utm_source=qr'),
