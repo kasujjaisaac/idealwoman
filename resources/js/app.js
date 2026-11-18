@@ -1,3 +1,7 @@
+import { initializeAccessibility } from './accessibility';
+
+initializeAccessibility();
+
 const toggle = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('#main-navigation');
 if (toggle && navigation) {
@@ -38,7 +42,8 @@ if (slider) {
     let hovered = false;
     let focused = false;
     let touchStart = null;
-    let paused = reducedMotion.matches;
+    let paused = reducedMotion.matches || document.documentElement.classList.contains('access-motion');
+    let motionPreference = document.documentElement.classList.contains('access-motion');
     let timer;
     const updateRotation = () => {
         clearInterval(timer);
@@ -95,7 +100,13 @@ if (slider) {
         button.addEventListener('click', () => manualSlide(Number(button.dataset.slideStep)));
     });
     document.addEventListener('visibilitychange', updateRotation);
-    reducedMotion.addEventListener('change', () => { paused = reducedMotion.matches; updateRotation(); });
+    reducedMotion.addEventListener('change', () => { paused = reducedMotion.matches || document.documentElement.classList.contains('access-motion'); updateRotation(); });
+    document.addEventListener('accessibilitychange', (event) => {
+        if (motionPreference === event.detail.motion) return;
+        motionPreference = event.detail.motion;
+        paused = event.detail.motion || reducedMotion.matches;
+        updateRotation();
+    });
     slider.addEventListener('keydown', (event) => {
         if (event.target !== slider) return;
         if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {

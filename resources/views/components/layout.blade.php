@@ -68,6 +68,7 @@
 @endcan
 @endauth
 <a href="#main" class="skip-link">{{ $site->text('shared.text_001') }}</a>
+<x-accessibility-tools/>
 <div class="topline" aria-label="Contact and support">
     <div class="wrap topbar-inner">
         <div class="topbar-contacts">
@@ -94,7 +95,7 @@
         </nav>
     </div>
 </header>
-<main id="main">{{ $slot }}</main>
+<main id="main" tabindex="-1">{{ $slot }}</main>
 <footer class="footer">
     <div class="wrap footer-grid">
         <div><a class="footer-brand" href="{{ route('home') }}"><img src="{{ $site->media('logo', asset('images/logo.png')) }}" width="900" height="266" alt="Ideal Woman. Reaching out to you." loading="lazy"></a><p class="footer-name">{{ $site->text('shared.text_006') }}</p><p>{{ $site->text('shared.text_007') }}</p><p class="footer-note">{{ $site->text('shared.text_008') }}<br>{{ $site->text('shared.text_009') }}</p><x-social-links label="Follow Ideal Woman on social media"/></div>
