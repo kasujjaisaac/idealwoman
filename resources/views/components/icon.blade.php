@@ -8,6 +8,7 @@
 @case('health')<path d="M16 28 5 18C-3 10 9 0 16 9c7-9 19 1 11 9zM9 17h4l2-6 3 11 2-5h4"/>@break
 @case('leadership')<path d="M16 28V5M16 6l11 3-11 5M7 28h18M7 21l-3 3 3 3M25 21l3 3-3 3"/>@break
 @case('pin')<path d="M26 13c0 8-10 16-10 16S6 21 6 13a10 10 0 0 1 20 0Z"/><circle cx="16" cy="13" r="3"/>@break
+@case('map')<path d="m3 7 8-4 10 4 8-4v22l-8 4-10-4-8 4ZM11 3v22M21 7v22"/>@break
 @case('opportunity')<path d="M10 22c0-5-5-6-5-12a11 11 0 0 1 22 0c0 6-5 7-5 12M10 22h12M12 26h8M14 30h4M16 6v9M12 11l4 4 4-4"/>@break
 @default<circle cx="16" cy="9" r="4"/><circle cx="5" cy="13" r="3"/><circle cx="27" cy="13" r="3"/><path d="M9 28v-5a7 7 0 0 1 14 0v5M1 27v-5a5 5 0 0 1 6-5M31 27v-5a5 5 0 0 0-6-5"/>
 @endswitch
