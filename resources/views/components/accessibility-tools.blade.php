@@ -1,5 +1,5 @@
 <div class="access-tools">
-    <div class="wrap access-tools-inner">
+    <div class="access-tools-inner">
         <details class="access-panel">
             <summary>Translate</summary>
             <div class="access-panel-body">
