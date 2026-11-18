@@ -114,6 +114,9 @@ figcaption { font-size: .73rem; color: #68728a; padding-top: 10px; }
 .footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
 .footer a { text-decoration: none; overflow-wrap: anywhere; }
 .footer a:hover { color: #153cc6; text-decoration: underline; }
+.footer-contacts a { gap: 10px; }
+.footer-contacts .icon { width: 18px; height: 18px; color: currentColor; }
+.footer-contacts span { min-width: 0; }
 address { font-style: normal; color: #58617b; }
 .footer-note { color: #68728a; font-size: .74rem; }
 .footer-map { display: block; color: #153cc6; margin-top: 15px; font-size: .71rem; }
