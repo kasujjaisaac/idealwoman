@@ -4,7 +4,7 @@ import { initializeAccessibility, normalizePreferences } from '../../resources/j
 
 test('invalid stored preferences fall back to safe defaults', () => {
     assert.deepEqual(normalizePreferences({ textSize: '999', contrast: 'false', motion: 1 }), {
-        textSize: '100', contrast: false, links: false, spacing: false, motion: false,
+        textSize: '100', theme: 'default', contrast: false, links: false, spacing: false, motion: false,
     });
     assert.equal(normalizePreferences(null).textSize, '100');
 });
@@ -14,9 +14,9 @@ function browser(stored, blocked = false) {
     const events = [];
     const status = { textContent: '' };
     const reset = { addEventListener: (_, handler) => { reset.click = handler; } };
-    const controls = ['textSize', 'contrast', 'links', 'spacing', 'motion'].map((key) => ({
+    const controls = ['textSize', 'theme', 'contrast', 'links', 'spacing', 'motion'].map((key) => ({
         dataset: { accessPreference: key },
-        type: key === 'textSize' ? 'select-one' : 'checkbox',
+        type: ['textSize', 'theme'].includes(key) ? 'select-one' : 'checkbox',
         addEventListener(_, handler) { this.change = handler; },
     }));
     const panel = {
@@ -29,6 +29,7 @@ function browser(stored, blocked = false) {
         querySelectorAll: () => [],
         documentElement: {
             style: {},
+            dataset: {},
             classList: { toggle: (name, enabled) => enabled ? classes.add(name) : classes.delete(name) },
         },
         dispatchEvent: (event) => events.push(event),
@@ -57,6 +58,19 @@ test('saved preferences apply on page load, changes persist, and reset restores 
     assert.equal(document.documentElement.style.fontSize, '100%');
     assert.equal(ui.classes.size, 0);
     assert.equal(JSON.parse(ui.stored()).motion, false);
+    assert.equal(document.documentElement.dataset.accessTheme, 'default');
+});
+
+test('color themes persist and invalid saved themes fall back to original colors', () => {
+    assert.equal(normalizePreferences({ theme: 'unknown' }).theme, 'default');
+    const ui = browser('{"theme":"warm"}');
+    initializeAccessibility();
+    assert.equal(document.documentElement.dataset.accessTheme, 'warm');
+    const theme = ui.controls.find((control) => control.dataset.accessPreference === 'theme');
+    theme.value = 'dark';
+    theme.change();
+    assert.equal(document.documentElement.dataset.accessTheme, 'dark');
+    assert.equal(JSON.parse(ui.stored()).theme, 'dark');
 });
 
 test('corrupt or blocked storage does not prevent controls from working', () => {

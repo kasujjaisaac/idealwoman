@@ -45,6 +45,14 @@
                     <option value="150">Largest</option>
                 </select>
                 <label class="access-check"><input type="checkbox" data-access-preference="contrast"> Higher contrast</label>
+                <label for="access-color-theme">Color theme</label>
+                <select id="access-color-theme" data-access-preference="theme" aria-describedby="access-theme-note">
+                    <option value="default">Original colors</option>
+                    <option value="warm">Warm cream</option>
+                    <option value="cool">Cool blue</option>
+                    <option value="dark">Dark</option>
+                </select>
+                <p id="access-theme-note">Higher contrast overrides the selected color theme.</p>
                 <label class="access-check"><input type="checkbox" data-access-preference="links"> Underline links</label>
                 <label class="access-check"><input type="checkbox" data-access-preference="spacing"> More reading space</label>
                 <label class="access-check"><input type="checkbox" data-access-preference="motion"> Reduce motion and pause slideshow</label>

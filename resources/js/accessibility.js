@@ -2,6 +2,7 @@ export function normalizePreferences(value) {
     const preferences = value && typeof value === 'object' ? value : {};
     return {
         textSize: ['100', '112.5', '125', '150'].includes(preferences.textSize) ? preferences.textSize : '100',
+        theme: ['default', 'warm', 'cool', 'dark'].includes(preferences.theme) ? preferences.theme : 'default',
         contrast: preferences.contrast === true,
         links: preferences.links === true,
         spacing: preferences.spacing === true,
@@ -21,6 +22,7 @@ export function initializeAccessibility() {
 
     const apply = () => {
         document.documentElement.style.fontSize = `${preferences.textSize}%`;
+        document.documentElement.dataset.accessTheme = preferences.theme;
         for (const key of ['contrast', 'links', 'spacing', 'motion']) {
             document.documentElement.classList.toggle(`access-${key}`, preferences[key]);
         }

@@ -885,6 +885,16 @@ h2 { font-weight: 500; }
 .access-spacing :is(p, li, address, label, input, textarea, select) { line-height: 2 !important; letter-spacing: .05em !important; word-spacing: .12em !important; }
 .access-spacing p + p { margin-top: 2em; }
 .access-motion *, .access-motion *::before, .access-motion *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
+html[data-access-theme="warm"] { --access-surface: #fff5df; --access-text: #302619; --access-link: #71380e; --access-border: #9d8056; color-scheme: light; }
+html[data-access-theme="cool"] { --access-surface: #eaf4ff; --access-text: #152c47; --access-link: #104e96; --access-border: #6b87a5; color-scheme: light; }
+html[data-access-theme="dark"] { --access-surface: #17202c; --access-text: #edf2fa; --access-link: #a9d3ff; --access-border: #7b8ea6; color-scheme: dark; }
+html[data-access-theme]:not([data-access-theme="default"]):not(.access-contrast) body,
+html[data-access-theme]:not([data-access-theme="default"]):not(.access-contrast) body * { color: var(--access-text) !important; background-color: var(--access-surface) !important; background-image: none !important; border-color: var(--access-border) !important; text-shadow: none !important; }
+html[data-access-theme]:not([data-access-theme="default"]):not(.access-contrast) :is(a, button, summary) { color: var(--access-link) !important; }
+html[data-access-theme]:not([data-access-theme="default"]):not(.access-contrast) :is(button, summary):hover { outline: 2px solid var(--access-link); outline-offset: -3px; }
+html[data-access-theme]:not([data-access-theme="default"]):not(.access-contrast) :is(svg, svg *) { background-color: transparent !important; }
+html[data-access-theme]:not([data-access-theme="default"]):not(.access-contrast) :focus-visible { outline-color: var(--access-link) !important; }
+.access-contrast { color-scheme: light !important; }
 .access-contrast body, .access-contrast body * { color: #000 !important; background-color: #fff !important; background-image: none !important; border-color: #000 !important; box-shadow: none !important; text-shadow: none !important; }
 .access-contrast a { color: #0036a8 !important; text-decoration: underline !important; }
 .access-contrast :is(a, button, input, select, textarea, summary):focus-visible { outline: 3px solid #000 !important; outline-offset: 4px; }
