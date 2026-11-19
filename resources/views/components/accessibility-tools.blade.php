@@ -1,9 +1,9 @@
 <div class="access-tools">
     <div class="access-tools-inner">
-        <details class="access-panel">
-            <summary aria-label="Translate"><x-icon name="globe"/><span class="access-tool-label">Translate</span></summary>
+        <details class="access-panel notranslate" translate="no">
+            <summary aria-label="Change website language"><x-icon name="globe"/><span class="access-tool-label">Change language</span></summary>
             <div class="access-panel-body">
-                <div class="translation-form" data-translation-controls>
+                <div class="translation-form notranslate" translate="no" data-translation-controls>
                     <div class="translation-heading"><x-icon name="globe"/><p>Choose your language</p></div>
                     <div class="language-grid" role="group" aria-label="Languages" translate="no">
                         <button type="button" class="language-option" data-language="en" aria-pressed="true"><img src="{{ asset('images/flags/gb.png') }}" width="24" height="16" alt=""><span lang="en" dir="auto">English</span></button>
@@ -15,11 +15,14 @@
                         <button type="button" class="language-option" data-language="pt" aria-pressed="false"><img src="{{ asset('images/flags/pt.png') }}" width="24" height="16" alt=""><span lang="pt" dir="auto">Português</span></button>
                         <button type="button" class="language-option" data-language="zh-CN" aria-pressed="false"><img src="{{ asset('images/flags/cn.png') }}" width="24" height="16" alt=""><span lang="zh-CN" dir="auto">中文（简体）</span></button>
                     </div>
-                    <p class="sr-only" role="status" data-translation-status translate="no"></p>
+                    <div id="idealwoman-language-provider" data-translation-provider hidden></div>
+                    <p role="status" data-translation-status translate="no" hidden></p>
+                    <button type="button" data-translation-retry hidden>Try again</button>
                     <noscript><p>Enable JavaScript to translate when you select a language.</p></noscript>
                 </div>
             </div>
         </details>
+
         <details class="access-panel" data-accessibility-panel hidden>
             <summary aria-label="Accessibility"><x-icon name="accessibility"/><span class="access-tool-label">Accessibility</span></summary>
             <dialog class="access-panel-body accessibility-settings" aria-labelledby="accessibility-heading">

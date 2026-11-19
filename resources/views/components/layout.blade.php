@@ -32,6 +32,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $pageTitle }}</title>
     <meta name="description" content="{{ $pageDescription }}">
     <meta name="robots" content="{{ $indexable ? 'index, follow, max-image-preview:large' : 'noindex, nofollow' }}">
@@ -78,6 +79,7 @@
             <a class="topbar-email" href="mailto:{{ preg_replace('/\s+/', '', $site->text('settings.email')) }}"><x-icon name="email"/>{{ $site->text('settings.email') }}</a>
         </div>
         <div class="topbar-actions">
+
             <x-social-links label="Follow Ideal Woman on social media"/>
             <a class="support-button" href="{{ route('involved') }}#partnership">{{ $site->text('shared.text_003') }}</a>
         </div>

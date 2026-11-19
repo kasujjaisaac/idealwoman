@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\PasswordResetController;
 use App\Http\Controllers\Admin\StoryController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\EnquiryController;
+use App\Http\Controllers\TranslationController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'pages.home')->name('home');
@@ -24,6 +25,7 @@ Route::view('/get-involved', 'pages.involved')->name('involved');
 Route::view('/volunteer-with-us', 'pages.volunteer')->name('volunteer');
 Route::view('/contact', 'pages.contact')->name('contact');
 Route::post('/contact', [EnquiryController::class, 'store'])->middleware('throttle:5,10')->name('enquiries.store');
+Route::post('/translate', TranslationController::class)->middleware('throttle:30,1')->name('translations.store');
 Route::get('/sitemap.xml', function () {
     return response()->view('sitemap')->header('Content-Type', 'application/xml');
 })->name('sitemap');

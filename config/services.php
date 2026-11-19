@@ -2,6 +2,11 @@
 
 return [
 
+    'translation' => [
+        'key' => env('GOOGLE_TRANSLATE_API_KEY'),
+        'daily_character_limit' => (int) env('TRANSLATION_DAILY_CHARACTER_LIMIT', 100000),
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Third Party Services

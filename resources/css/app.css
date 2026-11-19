@@ -974,3 +974,4 @@ html[data-access-theme]:not([data-access-theme="default"]) :is(.brand, .footer-b
     .access-tool-label { display: none; }
     .access-panel-body { position: absolute; right: 52px; top: 50%; transform: translateY(-50%); width: min(340px, calc(100vw - 76px)); max-height: 80dvh; }
 }
+

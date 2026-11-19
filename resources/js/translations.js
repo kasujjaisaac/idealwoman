@@ -1,3 +1,5 @@
+import contentPhrases from './content-translations.json' with { type: 'json' };
+
 export const languages = ['en', 'lg', 'sw', 'fr', 'ar', 'es', 'pt', 'zh-CN'];
 
 // Each row contains the English source followed by lg, sw, fr, ar, es, pt, zh-CN.
@@ -84,7 +86,10 @@ const phrases = [
 ];
 
 export const dictionaries = Object.fromEntries(languages.slice(1).map((language, index) => [
-    language, Object.fromEntries(phrases.map((row) => [row[0], row[index + 1]])),
+    language, Object.fromEntries([
+        ...phrases.map((row) => [row[0], row[index + 1]]),
+        ...Object.entries(contentPhrases).map(([source, values]) => [source, values[index]]),
+    ]),
 ]));
 
 for (const dictionary of Object.values(dictionaries)) {

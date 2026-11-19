@@ -11,9 +11,6 @@
             <x-photo class="work-card-photo" :name="$cardPhoto['name']" :alt="$cardPhoto['alt']" sizes="(min-width: 901px) 33vw, (min-width: 601px) 50vw, 100vw"/>
             @endif
             <div class="work-card-body">
-            <div class="card-top">
-                <span class="work-icon-panel"><x-icon :name="$work['icon']"/></span>
-            </div>
             <h3>{{ $work['title'] }}</h3>
             <p>{{ $work['description'] }}</p>
             <span class="work-card-footer"><span class="button work-card-action">{{ $site->text('work.card_button') }}</span><span class="work-card-marker" aria-hidden="true"></span></span>
