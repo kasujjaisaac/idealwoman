@@ -1,9 +1,11 @@
+import { initializePageReader } from './page-reader';
 import { initializeTranslation } from './translation';
 import { initializeAccessibility } from './accessibility';
 
 initializeAccessibility();
 
 initializeTranslation();
+initializePageReader();
 
 const formFeedback = document.querySelector('.enquiry-panel .alert');
 if (formFeedback) {

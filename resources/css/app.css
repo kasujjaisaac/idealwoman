@@ -975,3 +975,27 @@ html[data-access-theme]:not([data-access-theme="default"]) :is(.brand, .footer-b
     .access-panel-body { position: absolute; right: 52px; top: 50%; transform: translateY(-50%); width: min(340px, calc(100vw - 76px)); max-height: 80dvh; }
 }
 
+
+.access-panel [data-reader-play]:disabled,
+.access-panel [data-reader-pause]:disabled,
+.access-panel [data-reader-stop]:disabled { opacity: .5; cursor: not-allowed; }
+
+.access-panel .reader-popup { width: min(300px, calc(100vw - 144px)); padding: 18px; gap: 16px; border: 1px solid #dce5f7; border-radius: 16px; box-shadow: 0 16px 48px #101e5226; }
+.reader-heading { display: flex; align-items: center; gap: 10px; }
+.reader-icon { display: flex; align-items: center; justify-content: center; flex-shrink: 0; width: 40px; height: 40px; border-radius: 12px; color: #153cc6; background: #eaf0ff; }
+.reader-icon .icon { width: 22px; height: 22px; }
+.reader-popup .reader-heading h2 { margin: 0; font-size: 1rem; line-height: 1.4; letter-spacing: -.02em; font-weight: 600; }
+.reader-popup .reader-heading p { margin: 3px 0 0; font-size: .75rem; line-height: 1.5; color: #526078; }
+.reader-speed-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 14px; border-top: 1px solid #e7edf8; }
+.reader-speed-row label { font-size: .8125rem; font-weight: 500; }
+.reader-popup .reader-speed-row select { width: auto; max-width: 50%; min-height: 40px; padding: 6px 10px; border-radius: 8px; font-size: .8125rem; background: #f7f9fe; color: #101e52; }
+.reader-actions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.reader-popup .reader-actions button { min-width: 0; min-height: 44px; padding: 8px 4px; border-radius: 9px; font-size: .8125rem; font-weight: 500; background: #f0f5ff; border-color: #dce5f7; color: #153cc6; }
+.reader-popup .reader-actions [data-reader-play] { background: #153cc6; border-color: #153cc6; color: #fff; }
+.reader-popup .reader-actions button:enabled:hover { filter: brightness(.93); }
+.reader-popup :is(button, select):focus-visible { outline: 3px solid #153cc6; outline-offset: 3px; }
+.reader-popup .reader-status { margin: 0; padding: 9px 11px; border-radius: 8px; font-size: .75rem; line-height: 1.5; background: #f5f7fc; color: #526078; }
+.reader-popup .reader-note { margin: -6px 0 0; font-size: .6875rem; line-height: 1.5; color: #526078; }
+@media(max-width:600px) {
+    .access-panel .reader-popup { width: min(300px, calc(100vw - 76px)); padding: 16px; gap: 14px; }
+}

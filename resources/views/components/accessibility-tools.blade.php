@@ -23,6 +23,28 @@
             </div>
         </details>
 
+        <details class="access-panel notranslate" data-reader-panel translate="no" hidden>
+            <summary aria-label="Listen to this page"><x-icon name="speaker"/><span class="access-tool-label">Listen</span></summary>
+            <div class="access-panel-body reader-popup">
+                <div class="reader-heading"><span class="reader-icon"><x-icon name="speaker"/></span><div><h2>Listen to this page</h2><p>Sit back. We’ll read it to you.</p></div></div>
+                <div class="reader-speed-row">
+                    <label for="page-reader-speed">Reading speed</label>
+                    <select id="page-reader-speed" data-reader-speed>
+                        <option value="0.75">Slower</option>
+                        <option value="1" selected>Normal</option>
+                        <option value="1.25">Faster</option>
+                        <option value="1.5">Very fast</option>
+                    </select>
+                </div>
+                <div class="reader-actions" role="group" aria-label="Playback controls">
+                    <button type="button" data-reader-play>Play</button>
+                    <button type="button" data-reader-pause disabled>Pause</button>
+                    <button type="button" data-reader-stop disabled>Stop</button>
+                </div>
+                <p class="reader-status" role="status" data-reader-status>Ready to read this page.</p>
+                <p class="reader-note">Voices vary by browser and device.</p>
+            </div>
+        </details>
         <details class="access-panel" data-accessibility-panel hidden>
             <summary aria-label="Accessibility"><x-icon name="accessibility"/><span class="access-tool-label">Accessibility</span></summary>
             <dialog class="access-panel-body accessibility-settings" aria-labelledby="accessibility-heading">

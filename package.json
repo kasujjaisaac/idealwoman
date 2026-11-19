@@ -5,7 +5,7 @@
     "scripts": {
         "build": "vite build",
         "dev": "vite",
-        "test": "node --test tests/Unit/accessibility.test.js tests/Unit/translation.test.js tests/Unit/gtranslate.test.js"
+        "test": "node --test tests/Unit/accessibility.test.js tests/Unit/translation.test.js tests/Unit/gtranslate.test.js tests/Unit/page-reader.test.js"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
